@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Screen - AnyCompanyLearning Pro Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+        
+        .nav-items {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .nav-item {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            color: #2563eb;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .notification-badge {
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+        
+        /* Alert Sidebar */
+        .alert-sidebar {
+            width: 300px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 24px;
+        }
+        
+        .alert-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1e293b;
+        }
+        
+        .alert-card {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .alert-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .alert-card.warning {
+            background: #fffbeb;
+            border-color: #fed7aa;
+        }
+        
+        .alert-student {
+            font-weight: 600;
+            color: #dc2626;
+            margin-bottom: 4px;
+        }
+        
+        .alert-message {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .alert-time {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 24px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+        }
+        
+        /* Student Grid */
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .student-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .student-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .student-card.at-risk {
+            border-left: 4px solid #ef4444;
+        }
+        
+        .student-card.needs-attention {
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .student-card.on-track {
+            border-left: 4px solid #10b981;
+        }
+        
+        .student-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #64748b;
+        }
+        
+        .student-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .student-metrics {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-fill.high {
+            background: #10b981;
+        }
+        
+        .progress-fill.medium {
+            background: #f59e0b;
+        }
+        
+        .progress-fill.low {
+            background: #ef4444;
+        }
+        
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: #2563eb;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.2s;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+        
+        /* Annotations */
+        .annotation {
+            position: absolute;
+            background: #1e293b;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1000;
+            max-width: 200px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        
+        .annotation::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1e293b;
+        }
+        
+        .annotated:hover .annotation {
+            opacity: 1;
+        }
+        
+        /* Specifications Panel */
+        .specs-panel {
+            position: fixed;
+            top: 60px;
+            right: -400px;
+            width: 400px;
+            height: calc(100vh - 60px);
+            background: white;
+            border-left: 1px solid #e2e8f0;
+            padding: 24px;
+            overflow-y: auto;
+            transition: right 0.3s ease;
+            z-index: 200;
+        }
+        
+        .specs-panel.open {
+            right: 0;
+        }
+        
+        .specs-toggle {
+            position: fixed;
+            top: 80px;
+            right: 16px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 300;
+        }
+        
+        .spec-section {
+            margin-bottom: 24px;
+        }
+        
+        .spec-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .spec-content {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .alert-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            .student-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .specs-panel {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">AnyCompanyLearning Pro</div>
+        <nav class="nav-items">
+            <a href="#" class="nav-item active">Dashboard</a>
+            <a href="#" class="nav-item">Students</a>
+            <a href="#" class="nav-item">Reports</a>
+            <a href="#" class="nav-item">Settings</a>
+        </nav>
+        <div class="user-profile">
+            <div class="notification-badge">3</div>
+            <div>Ms. Johnson</div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Alert Sidebar -->
+        <aside class="alert-sidebar annotated">
+            <h2 class="alert-header">Active Alerts</h2>
+            <div class="annotation">Critical alerts requiring immediate teacher attention. Click any alert to view student details.</div>
+            
+            <div class="alert-card">
+                <div class="alert-student">Sarah Chen</div>
+                <div class="alert-message">Assignment completion rate dropped to 45%</div>
+                <div class="alert-time">2 minutes ago</div>
+            </div>
+            
+            <div class="alert-card warning">
+                <div class="alert-student">Marcus Williams</div>
+                <div class="alert-message">No activity for 3 days</div>
+                <div class="alert-time">1 hour ago</div>
+            </div>
+            
+            <div class="alert-card">
+                <div class="alert-student">Emma Rodriguez</div>
+                <div class="alert-message">Quiz scores below threshold</div>
+                <div class="alert-time">3 hours ago</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Class Overview - Period 3</h1>
+                <div class="filter-controls annotated">
+                    <select class="filter-select">
+                        <option>All Subjects</option>
+                        <option>Math</option>
+                        <option>Science</option>
+                        <option>English</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>This Week</option>
+                        <option>Last Week</option>
+                        <option>This Month</option>
+                    </select>
+                    <div class="annotation">Filter students by subject and time period to focus on specific areas of concern.</div>
+                </div>
+            </div>
+
+            <!-- Student Grid -->
+            <div class="student-grid">
+                <div class="student-card at-risk annotated">
+                    <div class="annotation">At-risk students shown with red indicator. Click to view detailed intervention options.</div>
+                    <div class="student-header">
+                        <div class="student-avatar">SC</div>
+                        <div class="student-name">Sarah Chen</div>
+                    </div>
+                    <div class="student-metrics">
+                        <div class="metric">
+                            <div class="metric-value">45%</div>
+                            <div class="metric-label">Completion</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">72</div>
+                            <div class="metric-label">Avg Score</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">3</div>
+                            <div class="metric-label">Alerts</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill low" style="width: 45%"></div>
+                    </div>
+                </div>
+
+                <div class="student-card needs-attention">
+                    <div class="student-header">
+                        <div class="student-avatar">MW</div>
+                        <div class="student-name">Marcus Williams</div>
+                    </div>
+                    <div class="student-metrics">
+                        <div class="metric">
+                            <div class="metric-value">68%</div>
+                            <div class="metric-label">Completion</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">81</div>
+                            <div class="metric-label">Avg Score</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">1</div>
+                            <div class="metric-label">Alerts</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill medium" style="width: 68%"></div>
+                    </div>
+                </div>
+
+                <div class="student-card on-track">
+                    <div class="student-header">
+                        <div class="student-avatar">ER</div>
+                        <div class="student-name">Emma Rodriguez</div>
+                    </div>
+                    <div class="student-metrics">
+                        <div class="metric">
+                            <div class="metric-value">92%</div>
+                            <div class="metric-label">Completion</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">88</div>
+                            <div class="metric-label">Avg Score</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">0</div>
+                            <div class="metric-label">Alerts</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill high" style="width: 92%"></div>
+                    </div>
+                </div>
+
+                <div class="student-card on-track">
+                    <div class="student-header">
+                        <div class="student-avatar">JD</div>
+                        <div class="student-name">James Davis</div>
+                    </div>
+                    <div class="student-metrics">
+                        <div class="metric">
+                            <div class="metric-value">85%</div>
+                            <div class="metric-label">Completion</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">91</div>
+                            <div class="metric-label">Avg Score</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">0</div>
+                            <div class="metric-label">Alerts</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill high" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab annotated" title="Quick Actions">
+        +
+        <div class="annotation">Quick access to common actions: create intervention, send message, generate report.</div>
+    </button>
+
+    <!-- Specifications Panel -->
+    <button class="specs-toggle" onclick="toggleSpecs()">📋 Specs</button>
+    <div class="specs-panel" id="specsPanel">
+        <div class="spec-section">
+            <div class="spec-title">Screen Purpose</div>
+            <div class="spec-content">Provide teachers with immediate overview of student status and urgent alerts requiring attention.</div>
+        </div>
+        
+        <div class="spec-section">
+            <div class="spec-title">Key Interactions</div>
+            <div class="spec-content">
+                • Click alert cards to view student details<br>
+                • Click student cards for drill-down view<br>
+                • Use filters to focus on specific subjects/timeframes<br>
+                • FAB provides quick access to common actions
+            </div>
+        </div>
+        
+        <div class="spec-section">
+            <div class="spec-title">Visual Hierarchy</div>
+            <div class="spec-content">
+                • Red indicators for at-risk students<br>
+                • Amber for students needing attention<br>
+                • Green for on-track students<br>
+                • Alert sidebar draws immediate attention
+            </div>
+        </div>
+        
+        <div class="spec-section">
+            <div class="spec-title">Responsive Behavior</div>
+            <div class="spec-content">
+                • Mobile: Alert sidebar moves to top<br>
+                • Student grid becomes single column<br>
+                • Specs panel becomes full-width overlay
+            </div>
+        </div>
+        
+        <div class="spec-section">
+            <div class="spec-title">Performance Requirements</div>
+            <div class="spec-content">
+                • Real-time updates every 30 seconds<br>
+                • Page load time under 2 seconds<br>
+                • Smooth animations and transitions<br>
+                • Accessible keyboard navigation
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSpecs() {
+            const panel = document.getElementById('specsPanel');
+            panel.classList.toggle('open');
+        }
+        
+        // Simulate real-time updates
+        setInterval(() => {
+            const alerts = document.querySelectorAll('.alert-time');
+            alerts.forEach(alert => {
+                const currentText = alert.textContent;
+                if (currentText.includes('minutes ago')) {
+                    const minutes = parseInt(currentText) + 1;
+                    alert.textContent = `${minutes} minutes ago`;
+                }
+            });
+        }, 60000);
+        
+        // Add click handlers for demonstration
+        document.querySelectorAll('.student-card, .alert-card').forEach(card => {
+            card.addEventListener('click', () => {
+                alert('This would navigate to the detailed view for this student.');
+            });
+        });
+    </script>
+</body>
+</html>
