@@ -14,17 +14,16 @@ Task Name:
 - [ ] Consider new business processes that might come out of this implementation
 - [ ] Consider how business value can be measured using business metrics
 
-### What specific business value will this ML solution deliver?
-
-### What are the key business performance metrics this will impact?
-
 ### Who are the stakeholders and how are they aligned?
 
-### What problem is solved by this application or application feature?
+### What specific business value will this ML solution deliver?
+*The business problem to be solved and specific business metrics the solution will impact*
 
 ### What new business processes might emerge from this implementation?
+*Business processes and workflows this solution fits into. The user experience while using the solution*
 
-### What are the critical, must-have features for success?
+### What are the critical, must-have features and metrics for success?
+*Features include AI capabilities that need to be validated in our solution and it's components.*
 
 ---
 ## ML Problem Framing
@@ -37,59 +36,32 @@ Task Name:
 - [ ] Formulate the ML question in terms of inputs, desired outputs, and the performance metric to be optimized
 
 ### ML Approach Validation
-- [ ] Evaluate all available options for achieving the business goal
+- [ ] Evaluate options for achieving the business goal
 - [ ] Determine accuracy requirements vs cost and scalability of each approach
 - [ ] Assess if simple business rules could achieve the same outcome
 - [ ] Validate sufficient relevant, high-quality training data is available
 - [ ] Evaluate whether ML is the right approach
 
-#### Could this problem be solved without ML? What alternatives exist?
-
-#### What makes ML the optimal approach for this specific use case?
-
-#### What is the cost-benefit analysis of ML vs alternative approaches?
-
 ### ML Problem Definition
+*The problem to be solved, stated in terms of inputs and outputs. Given X, output Y*
 
 #### What is the ML Problem Statement?
+*Description of the problem statement*
 
 #### What is observed (inputs) and what should be predicted (outputs)?
-
-#### What types of ML problems need to be solved to deliver this solution (generation, summarization, retrieval, classification, regression, clustering, etc.)?
-
-#### What are the Available Data sources?
-
-#### What is the expected data volume and velocity?
-
-#### What are the Output Requirements?
-
-#### What is the target accuracy/performance threshold?
-
-#### What are the latency requirements for predictions?
-
-#### What Guardrails are required?
-
-#### How will the model handle edge cases and out-of-distribution data?
+*Detailed description of the inputs and outputs. Include an example if possible.*
 
 ### Performance Metrics and Success Criteria
+*The quality requirements that will be used to evalute the solution and it's components.*
 
-#### What is a correct output?
+#### What are the features of a high quality output?
+*Fast enough. Accurate enough. High recall for a given task. Raising the right citations. What are the factors that impact the fit for this use-case?*
 
-#### What is an incorrect output?
-
-#### What is the impact of a false positive?
-
-#### What is the impact of a false negative?
-
-#### What are the acceptable error rates for your use case?
-
-#### How will model performance degrade gracefully under different conditions?
+#### What are the features of a low quality output?
+*The most important ways an output might be poor quality. Evaluations will include these cases checking behavior.*
 
 #### What are the baseline performance metrics to compare against?
-
-#### How will you collect ongoing metrics during usage?
-
-#### What constitutes model drift and how will you detect it?
+*Metrics from existing processes. Target metrics based on best-effort guesses might be updated with qualitative feedback later.*
 
 ### Metric Selection Guide
 *Select applicable metrics for your evaluation. Delete metrics that don't apply to your use case.*
@@ -158,10 +130,6 @@ Task Name:
 - [ ] **G-Eval** - Chain-of-thought evaluation based on custom criteria
 - [ ] **Model-Graded Closed QA** - LLM-based evaluation for question-answering tasks
 
-#### What specific metrics will you use to optimize results?
-
-#### What are your success thresholds for each selected metric?
-
 ### Technical-Business Outcome Mapping
 - [ ] Map the technical outcome to a business outcome
 - [ ] Define clear relationships between technical metrics and business KPIs
@@ -170,70 +138,5 @@ Task Name:
 
 #### What technical performance threshold is required to achieve business objectives?
 
-#### How will you communicate technical performance to business stakeholders?
-
----
-## Data Strategy
-*Create a strategy to achieve the data sourcing and data annotation objective.*
-
-- [ ] Create a strategy to achieve the data sourcing and data annotation objective
-- [ ] Review the project's ML feasibility and data requirements
-- [ ] Start with a simple model that is easy to interpret, and makes debugging more manageable
-- [ ] Iterate on the model by gathering more data, optimizing the parameters, or increasing the complexity as needed to achieve the business outcome
-
-### Data Requirements and Availability
-
-#### What data is available for testing?
-
-#### How will you approach annotated data / Ground Truth to evaluate metrics?
-
-#### What are the data quality requirements?
-
-#### Are there any data gaps that need to be addressed?
-
-### Iterative Development Approach
-- [ ] Use evaluation tools to measure experiments with different models, prompts, and configurations
-- [ ] Build solution components that assemble to complete the task
-- [ ] Plan for iterative improvement through more data, different models, prompt and hyperparameter optimization, and architectural changes
-- [ ] Design small, focused POCs to validate uncertain aspects
-
-#### What is the simplest viable solution to start with?
-
-#### How will you iterate and improve the solution over time?
-
-#### What POCs are needed to validate uncertain aspects of the approach?
-
----
-## Cost and Performance Optimization
-*Evaluate the cost of data acquisition, training, inference, and wrong predictions.*
-
-- [ ] Evaluate the cost of data acquisition, training, inference, and wrong predictions
-- [ ] Evaluate whether bringing in external data sources might improve model performance
-- [ ] Consider scalability requirements and associated costs
-
----
-## Production Considerations
-*Review how to handle ML-generated errors and establish pathways to production.*
-
-- [ ] Review how to handle ML-generated errors
-- [ ] Establish pathways to production
-- [ ] Define monitoring and alerting strategies
-- [ ] Plan for model drift and retraining
-
-### Production Deployment
-
-#### How will AI-generated errors be handled in production?
-
-#### Will output keep the human in the loop?
-
-### Monitoring and Maintenance
-
-#### How will model performance be monitored over time?
-
-#### What triggers model retraining or updates?
-
-#### How is it monitored for ongoing performance?
-
-#### What alerting mechanisms will be in place?
 
 
