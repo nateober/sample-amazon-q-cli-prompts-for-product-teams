@@ -11,7 +11,9 @@ This steering file guides market research using built-in web search and fetch ca
 Use the built-in **web_search** tool to find information and **web_fetch** tool to retrieve and analyze web page content. These tools are available without any additional configuration.
 
 - **web_search**: Search the web for information on competitors, market data, and customer insights
-- **web_fetch**: Fetch specific URLs to extract detailed information like pricing, features, and brand assets
+- **web_fetch**: Fetch HTML pages to extract detailed information like pricing and features
+
+**⚠️ IMPORTANT: Do NOT use web_fetch to download binary files (images, logos, PDFs). web_fetch is for HTML pages only. Use curl for image/logo verification.**
 
 ## Research Protocol
 
@@ -104,11 +106,14 @@ Save findings to `./documents/MarketResearch_[ProductName]_[YYYY-MM-DD].html` wi
 
 If building for a specific company:
 
+**⚠️ Do NOT use web_fetch to download logos. Use curl instead.**
+
 1. **Search:** "[Company Name] logo png" or "[Company Name] logo svg"
 2. **Check:** Press kit or media page for official logo files
-3. **Fetch:** Logo URL and save for use in all documents
-4. **Extract:** Brand colors from their website (exact hex values)
-5. **Note:** If logo unavailable, use styled text placeholder
+3. **Verify with curl:** `curl -sI "[LOGO_URL]" | head -5` - must show 200 OK
+4. **If URL fails (404/403):** Try another URL until one works
+5. **Extract:** Brand colors from their website (exact hex values)
+6. **Note:** If logo unavailable, use styled text placeholder
 
 ## Best Practices
 

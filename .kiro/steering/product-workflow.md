@@ -84,6 +84,9 @@ The validation agent checks:
 **Step 3: Get Customer Brand Assets (REQUIRED for known companies)** - If building for a specific company:
 
 **Logo (MANDATORY - do this FIRST):**
+
+**⚠️ IMPORTANT: Do NOT use web_fetch to download images/logos. Use curl instead.**
+
 1. Search: "[Company Name] logo png", "[Company Name] press kit", "[Company Name] media assets"
 2. Check these sources in order:
    - Company's official press/media/newsroom page (e.g., `company.com/press`, `company.com/media`)
@@ -122,6 +125,8 @@ WHILE logo not verified:
 **Typography:** Identify their font families from their website's CSS
 
 **CRITICAL:** You MUST use `curl -sI` to verify the logo URL returns 200 OK before proceeding. If a URL returns 404 or error, try another URL. Do not proceed to PRFAQ without a verified, working logo URL.
+
+**⚠️ NEVER use web_fetch to download binary files (images, logos, PDFs). web_fetch is for HTML pages only. Always use curl for image verification.**
 
 **Do not rely on search snippets alone. You must fetch and read pages to get accurate data.**
 

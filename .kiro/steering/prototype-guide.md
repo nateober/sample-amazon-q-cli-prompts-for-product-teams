@@ -42,7 +42,9 @@ When recreating existing UI:
 
 ## Customer Brand Research
 
-If building for a specific company, use the built-in web_search and web_fetch tools:
+If building for a specific company, use web_search to find brand assets.
+
+**⚠️ IMPORTANT: Do NOT use web_fetch to download images/logos. web_fetch is for HTML pages only. Use curl for image verification.**
 
 **Search queries:**
 ```
