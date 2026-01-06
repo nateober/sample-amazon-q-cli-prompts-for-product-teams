@@ -90,6 +90,9 @@ documents/
 ## File Structure
 
 ```
+CLAUDE.md                       (auto-loads in Claude Code)
+.cursorrules                    (auto-loads in Cursor)
+
 .kiro/
 ├── steering/
 │   ├── product-workflow.md     (main orchestration - always loaded)
@@ -99,6 +102,13 @@ documents/
 │   ├── prd-guide.md            (PRD guide - manual)
 │   └── prototype-guide.md      (prototype guide - manual)
 └── hooks.json                  (agent hooks for automation)
+
+prompts/                        (Claude Code / Cursor workflow)
+├── Claude_Code_Workflow.md     (main workflow guide)
+├── Market Research Agent.md
+├── PRFAQ Guide.md
+├── PRD Creation Guide.md
+└── Prototype Creation Guide.md
 
 documents/                      (auto-generated outputs)
 ├── MarketResearch_*.html
@@ -113,9 +123,6 @@ samples/                        (example outputs for reference)
 ├── PRFAQ_TeenFit.html
 ├── PRD_TeenFit.html
 └── Screen_*.html
-
-prompts/                        (legacy multi-agent prompts)
-└── [various .md files]         (for non-Kiro tools)
 ```
 
 ## Steering Files
@@ -136,7 +143,7 @@ Pre-configured hooks in `.kiro/hooks.json` provide 26 PM-focused agents:
 **Automatic Validation (on file save):**
 - Market Research, PRFAQ, PRD, AI Framing validators
 - Design System Consistency (prevents AI slop)
-- Tech Stack Compliance (AWS/Anthropic only)
+- Tech Stack Validator (prefers AWS-native services)
 
 **Core Workflow (manual):**
 - Run Market Research → Create PRFAQ → Create PRD → Create Prototype
@@ -192,26 +199,32 @@ Each phase includes validation checkpoints:
 
 The workflow will not proceed until validation passes.
 
-## Technical Constraints
+## AWS-Native Architecture
 
-PRD technical designs are constrained to:
+As an AWS-provided toolkit, PRD technical designs prefer AWS services for enterprise-grade scalability, security, and compliance:
+
 - **Compute:** Lambda, ECS, EC2, App Runner
 - **Database:** DynamoDB, Aurora, RDS
-- **AI/ML:** Amazon Bedrock, Claude API
+- **Generative AI:** Amazon Bedrock, Bedrock AgentCore, Amazon Q
 - **Storage:** S3, EFS
 - **API:** API Gateway, AppSync
 - **Auth:** Cognito
 
-**Not recommended:** OpenAI, Google Cloud, Azure, Vercel, Firebase, Supabase
+Amazon Bedrock provides access to foundation models from Amazon (Nova) and third-party providers (Anthropic Claude, Meta Llama, Mistral, and more).
 
-## Legacy Mode (Non-Kiro Tools)
+## Claude Code / Cursor Mode
 
-If using a tool without Kiro steering file support, use the prompts in `prompts/` folder directly:
-1. Load `prompts/PRFAQ Guide.md` with your product concept
-2. Load `prompts/PRD Creation Guide.md` with PRFAQ output
-3. Load `prompts/Prototype Creation Guide.md` with PRD output
+For Claude Code or Cursor, copy the auto-loading config files to your project:
 
-Note: Legacy mode doesn't include automated market research.
+```bash
+cp CLAUDE.md your-project/       # For Claude Code
+cp .cursorrules your-project/    # For Cursor
+cp -r prompts/ your-project/prompts/
+```
+
+The workflow loads automatically when you open your project. Just describe your product idea and the AI will guide you through the phases.
+
+See `prompts/Claude_Code_Workflow.md` for the complete workflow guide.
 
 ## Requirements
 

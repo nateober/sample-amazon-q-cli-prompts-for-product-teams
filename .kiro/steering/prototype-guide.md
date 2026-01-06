@@ -161,14 +161,92 @@ Focus on high-impact moments:
 - Tablet: 768px-1023px
 - Mobile: <768px
 
-## Interactive Features
+## Interactive Features (CRITICAL - FULLY FUNCTIONAL)
 
+**Every prototype must be FULLY CLICKABLE and INTERACTIVE. No dead ends.**
+
+### Navigation (All Links Work)
 - Working navigation between all screens
-- Form validation (visual feedback)
-- Hover and click states
-- Loading indicators
-- Toast notifications
-- Mobile menu toggle
+- Every button navigates to appropriate screen
+- "Back" buttons return to previous screen
+- Breadcrumbs are clickable
+- Mobile menu toggle works
+
+### Forms (Full Mock Behavior)
+- Form validation with inline error messages
+- Loading states during "submission" (spinner, disabled button)
+- Success states with confirmation messages
+- Error states with retry options
+- Auto-focus on first field
+
+### Chat Interfaces (MOCKED CONVERSATIONS)
+If the prototype includes any chat or messaging:
+- **Pre-populated conversation history** with realistic messages
+- **Typing indicator** appears after user sends message
+- **Simulated AI/bot responses** appear after 1-2 second delay
+- **Multiple response variations** - different messages on different sends
+- Input field clears after send
+- Messages scroll into view
+- Timestamp display on messages
+
+```javascript
+// Example chat mock
+function simulateChat(userMessage) {
+    showTypingIndicator();
+    setTimeout(() => {
+        hideTypingIndicator();
+        const responses = [
+            "I understand. Let me help you with that...",
+            "Great question! Here's what I found...",
+            "Based on your request, I recommend..."
+        ];
+        addBotMessage(responses[Math.floor(Math.random() * responses.length)]);
+    }, 1500);
+}
+```
+
+### Dropdowns & Selects (Functional)
+- Clicking opens dropdown menu
+- Options are selectable
+- Selection updates the displayed value
+- Dropdown closes after selection
+
+### Modals & Dialogs (Functional)
+- Open on trigger (button click, action)
+- Close on X button, backdrop click, Escape key
+- Form modals process and close
+- Confirmation dialogs have working Yes/No buttons
+
+### Data Tables (Interactive)
+- Sort columns on header click
+- Filter/search updates visible rows
+- Pagination navigates between pages
+- Row selection highlights row
+- Action buttons on rows work
+
+### Hover & Click States
+- Buttons show hover/active states
+- Cards have hover effects
+- Links show hover underline/color change
+- Interactive elements have cursor: pointer
+
+### Loading States
+- Skeleton screens for initial load
+- Spinners for actions in progress
+- Progress bars for multi-step operations
+- Disabled states prevent double-clicks
+
+### Toast Notifications
+- Success toasts for completed actions
+- Error toasts for failed actions
+- Auto-dismiss after 3-5 seconds
+- Manual dismiss with X button
+
+### Mobile Interactions
+- Hamburger menu toggles sidebar
+- Swipe gestures where appropriate
+- Pull-to-refresh visual (if applicable)
+- Bottom sheet modals on mobile
 
 ## Output Files - MODULAR STRUCTURE (REQUIRED)
 
@@ -224,17 +302,35 @@ A simple index page listing all screens with links - useful for reviewers to nav
 - **Smaller files** - Each file stays manageable
 
 ### Navigation Between Screens
-Use relative links in navigation:
+
+**CRITICAL: Every button, link, and navigation element must work.**
+
+Use relative links to connect screens:
 ```html
 <a href="Screen_Dashboard_[Product]_[YYYY-MM-DD].html">Dashboard</a>
 <a href="Screen_Settings_[Product]_[YYYY-MM-DD].html">Settings</a>
 ```
 
+**Connect these elements:**
+- Navigation menus → link to all main screens
+- Dashboard cards → link to detail screens
+- "Back" buttons → return to previous screen
+- Form submissions → navigate to success/confirmation screens
+- Call-to-action buttons → navigate to appropriate next step
+
+**Test every link** by clicking through all user flows before marking complete.
+
 ## Quality Checklist
 
-### Functional
+### Functional (FULLY INTERACTIVE)
 - [ ] All PRD screens implemented
-- [ ] All user flows completable end-to-end
+- [ ] **All buttons and links navigate to correct screens**
+- [ ] **User flows completable end-to-end by clicking through**
+- [ ] **Chat interfaces have mocked responses** (if applicable)
+- [ ] **Forms submit with loading → success/error states**
+- [ ] **Dropdowns/selects are functional**
+- [ ] **Modals open/close correctly**
+- [ ] **Data tables sort/filter/paginate** (if applicable)
 - [ ] Forms have validation and feedback
 - [ ] Responsive at all breakpoints
 - [ ] Keyboard navigation works
@@ -271,8 +367,12 @@ Use relative links in navigation:
 6. **All interactions work** - Every button, link, form, and navigation element is functional
 7. **Cross-screen navigation works** - Links between Screen_*.html files work correctly
 8. **Forms submit and show feedback** - Validation, loading states, success/error responses
-9. **Data is realistic** - Real-looking names, numbers, dates - no "Lorem ipsum" or "Test User"
-10. **Responsive layouts work** - Desktop, tablet, and mobile all functional
+9. **Chat interfaces are mocked** - If chat exists, it shows typing indicators and simulated responses
+10. **Dropdowns/selects work** - Click to open, select option, value updates
+11. **Modals work** - Open on trigger, close on X/backdrop/Escape
+12. **Data tables are interactive** - Sort, filter, paginate all functional (if applicable)
+13. **Data is realistic** - Real-looking names, numbers, dates - no "Lorem ipsum" or "Test User"
+14. **Responsive layouts work** - Desktop, tablet, and mobile all functional
 
 ### After Creating Each Screen
 - **Open the screen file in the browser** to verify it renders correctly

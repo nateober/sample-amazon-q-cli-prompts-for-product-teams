@@ -420,33 +420,120 @@ For each screen in `prd_context.screens_to_build`:
 - Mobile navigation (hamburger menu)
 - Touch-optimized interactions
 
-### Step 5: Implement Interactivity
+### Step 5: Implement Interactivity (CRITICAL - FULLY FUNCTIONAL)
+
+**Every prototype must be FULLY CLICKABLE with all interactions working. No static mockups.**
 
 Each screen must include:
 
-**Navigation:**
-- Working links between screens
-- Breadcrumb navigation
-- Back/forward navigation
-- Mobile menu toggle
+**Navigation (All Links Work):**
+- Every button and link navigates to the correct screen using `href="Screen_[Name]_[Product]_[Date].html"`
+- Navigation menus link to all main screens
+- Dashboard cards link to their detail screens
+- "Back" buttons return to the previous screen
+- Form submissions navigate to success/confirmation screens
+- Breadcrumb navigation (clickable)
+- Mobile menu toggle (functional)
+- **Test every link** by clicking through all user flows
 
-**Forms:**
-- Input validation (visual feedback)
-- Error states on invalid input
-- Success states on valid input
-- Submit button states (default, hover, loading, disabled)
+**Chat Interfaces (MOCKED CONVERSATIONS - if applicable):**
+If the prototype includes any chat, messaging, or AI assistant:
+```javascript
+// Required chat mock behavior
+function handleChatSend(userMessage) {
+    // 1. Add user message to chat
+    addMessage('user', userMessage);
+    clearInput();
+
+    // 2. Show typing indicator
+    showTypingIndicator();
+
+    // 3. Simulate response delay (1-2 seconds)
+    setTimeout(() => {
+        hideTypingIndicator();
+
+        // 4. Add bot/AI response (varied responses)
+        const responses = [
+            "I understand your request. Let me help you with that...",
+            "Great question! Based on your input, I recommend...",
+            "I've analyzed your request. Here's what I found...",
+            "Thanks for that information. Here's my suggestion..."
+        ];
+        const response = responses[Math.floor(Math.random() * responses.length)];
+        addMessage('bot', response);
+
+        // 5. Scroll to bottom
+        scrollChatToBottom();
+    }, 1500);
+}
+```
+- Pre-populated conversation history with realistic messages
+- Typing indicator ("..." or animated dots) appears after user sends
+- Simulated bot/AI responses after 1-2 second delay
+- Multiple response variations for realism
+- Input field clears after send
+- Chat scrolls to show new messages
+- Timestamps on messages
+
+**Forms (Full Mock Behavior):**
+- Input validation with inline error messages on blur
+- Loading state on submit (spinner in button, button disabled)
+- Success state after "submission" (toast, redirect, or inline message)
+- Error state with retry option
+- Auto-focus on first input on page load
+```javascript
+// Required form behavior
+function handleFormSubmit(form) {
+    // 1. Validate
+    if (!validateForm(form)) return showErrors();
+
+    // 2. Show loading
+    showSubmitLoading();
+
+    // 3. Simulate API call
+    setTimeout(() => {
+        hideSubmitLoading();
+        // 4. Show success (or error)
+        showSuccessToast("Changes saved successfully!");
+        // Or navigate: window.location.href = 'Screen_Success_...html';
+    }, 1000);
+}
+```
+
+**Dropdowns & Selects (Functional):**
+- Click to open dropdown menu
+- Options are clickable and selectable
+- Selection updates the displayed value
+- Dropdown closes after selection or on click outside
+- Custom styled dropdowns must work, not just native `<select>`
+
+**Modals & Dialogs (Functional):**
+- Open on button/link click
+- Close on X button
+- Close on backdrop click
+- Close on Escape key
+- Form modals process input and close
+- Confirmation dialogs have working Yes/No/Cancel buttons
+
+**Data Tables (Interactive - if applicable):**
+- Sort columns by clicking header (toggle asc/desc)
+- Filter/search updates visible rows in real-time
+- Pagination shows different pages
+- Row selection highlights the row
+- Action buttons on rows perform their action (open modal, navigate, etc.)
 
 **Data Display:**
-- Realistic sample data
-- Sorting/filtering (visual only)
-- Pagination (visual)
-- Search (visual)
+- Realistic sample data (no Lorem ipsum, "Test User", "John Doe")
+- Sorting/filtering actually works (not just visual)
+- Pagination navigates between pages
+- Search filters results
 
 **Feedback:**
-- Hover states on interactive elements
-- Click/tap feedback
-- Loading indicators
-- Toast notifications
+- Hover states on all interactive elements
+- Click/tap feedback (button depression, ripple effect)
+- Loading indicators for async operations
+- Toast notifications for actions (auto-dismiss after 3-5 seconds)
+- Success/error states are visually distinct
 
 ### Step 6: Build Clickable Prototype
 
@@ -567,20 +654,48 @@ Create single comprehensive HTML file combining all screens:
 
 #### Required Prototype Features
 
-**Navigation System:**
-- [ ] All screens accessible via navigation
+**Navigation System (CRITICAL):**
+- [ ] **Every button and link navigates to correct screen**
+- [ ] **User flows completable end-to-end by clicking through**
+- [ ] All screens accessible via navigation menus
 - [ ] Deep linking via URL hash (#screen-name)
 - [ ] Browser back/forward works
 - [ ] Mobile hamburger menu functional
 
+**Chat/Messaging (CRITICAL - if applicable):**
+- [ ] **Pre-populated conversation history**
+- [ ] **Typing indicator after user sends**
+- [ ] **Simulated bot/AI responses after delay**
+- [ ] **Input clears, chat scrolls to bottom**
+- [ ] Multiple varied responses for realism
+
 **Form Interactions:**
-- [ ] All forms have validation
-- [ ] Error messages display correctly
-- [ ] Success states show confirmation
-- [ ] Loading states during "submission"
+- [ ] All forms have inline validation
+- [ ] Error messages display on invalid input
+- [ ] **Loading state on submit (spinner, disabled button)**
+- [ ] **Success states show confirmation (toast or redirect)**
+- [ ] Error states allow retry
+
+**Dropdowns/Selects:**
+- [ ] **Click opens dropdown**
+- [ ] **Options are selectable**
+- [ ] **Selection updates displayed value**
+- [ ] Dropdown closes after selection
+
+**Modals/Dialogs:**
+- [ ] **Open on trigger click**
+- [ ] **Close on X, backdrop, Escape**
+- [ ] Form modals process and close
+- [ ] Confirmation dialogs have working buttons
+
+**Data Tables (if applicable):**
+- [ ] **Sort by clicking column header**
+- [ ] **Filter/search updates rows**
+- [ ] **Pagination works**
+- [ ] Row actions work
 
 **Data Simulation:**
-- [ ] Realistic sample data throughout
+- [ ] Realistic sample data throughout (no Lorem ipsum)
 - [ ] Data consistency across screens
 - [ ] State persists during session (localStorage)
 - [ ] Actions update visible data
@@ -897,10 +1012,15 @@ Don't default to solid colors. Create depth and interest:
 
 Before completing, verify:
 
-### Functional Quality
+### Functional Quality (FULLY INTERACTIVE)
 - [ ] All screens from PRD are implemented
 - [ ] All user flows can be completed end-to-end
-- [ ] Forms have validation and feedback
+- [ ] **All buttons/links navigate correctly**
+- [ ] **Chat interfaces mocked** (typing indicator, responses, scroll)
+- [ ] **Forms have full behavior** (validation, loading, success/error)
+- [ ] **Dropdowns/selects work** (open, select, close)
+- [ ] **Modals work** (open, close on X/backdrop/Escape)
+- [ ] **Data tables interactive** (sort, filter, paginate)
 - [ ] Navigation works between all screens
 - [ ] Responsive design works at all breakpoints
 - [ ] No placeholder/TODO content remains
@@ -934,7 +1054,11 @@ Before completing, verify:
 - Update the dashboard (Orchestrator's responsibility)
 - Reference prior conversation context (only use handoff payload)
 
-**Functional:**
+**Functional (MUST BE FULLY INTERACTIVE):**
+- Create static mockups without working interactions
+- Leave chat interfaces without mocked responses
+- Create forms that don't show loading/success/error states
+- Leave dropdowns, modals, or data tables non-functional
 - Create partially functional prototypes
 - Leave placeholder content ("Lorem ipsum", "TBD")
 - Skip mobile responsive design

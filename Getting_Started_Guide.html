@@ -808,7 +808,28 @@
 
                 <div class="callout info">
                     <h4>What is Kiro?</h4>
-                    <p><a href="https://kiro.dev" target="_blank"><strong>Kiro</strong></a> is an AI-powered IDE that uses "steering files" to guide AI behavior with project-specific instructions. Steering files are markdown documents in <code>.kiro/steering/</code> that provide context, workflows, and constraints. When you work in Kiro, these files automatically shape how the AI assistant responds&mdash;no manual prompting required.</p>
+                    <p><a href="https://kiro.dev" target="_blank"><strong>Kiro</strong></a> is an agentic AI IDE and CLI that helps you go from prototype to production with spec-driven development. It transforms natural language prompts into structured specifications, working code, documentation, and tests.</p>
+                </div>
+
+                <h3>Why Kiro?</h3>
+                <div class="workflow-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="workflow-card">
+                        <h4>Steering Files</h4>
+                        <p>Markdown files in <code>.kiro/steering/</code> that configure how AI agents interact with your project&mdash;coding standards, workflows, and constraints load automatically.</p>
+                    </div>
+                    <div class="workflow-card">
+                        <h4>Agent Hooks</h4>
+                        <p>Event-driven automation that triggers on file saves, commands, or custom events. Run validators, formatters, or workflows automatically.</p>
+                    </div>
+                    <div class="workflow-card">
+                        <h4>Spec-Driven Development</h4>
+                        <p>Converts prompts into structured requirements and implementation plans with discrete tasks. Analyzes your codebase to recommend architecture.</p>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="comment"># Install Kiro CLI (macOS/Linux)</span>
+curl -fsSL https://cli.kiro.dev/install | bash
                 </div>
 
                 <h3>The 4-Phase Workflow</h3>
@@ -853,12 +874,7 @@
                     <div class="tool-card">
                         <span class="tool-badge">Alternative</span>
                         <h4>Claude Code / Cursor</h4>
-                        <p>Use the legacy prompts in <code>prompts/</code> folder. Load guides manually for each phase.</p>
-                    </div>
-                    <div class="tool-card">
-                        <span class="tool-badge">Alternative</span>
-                        <h4>Amazon Q Developer</h4>
-                        <p>Use the legacy prompts folder. Works with both CLI and VSCode extension.</p>
+                        <p>Auto-loads via <code>CLAUDE.md</code> or <code>.cursorrules</code>. Full workflow with guided phases.</p>
                     </div>
                 </div>
             </div>
@@ -869,59 +885,235 @@
             <div class="section">
                 <h2>Setup Guide</h2>
 
+                <div class="callout danger">
+                    <h4>Important: Hidden Files</h4>
+                    <p>The <code>.kiro</code> and <code>.cursorrules</code> files/folders are <strong>hidden</strong> (they start with a dot). You won't see them in Finder or File Explorer by default.</p>
+                    <p style="margin-top: 12px;"><strong>To show hidden files:</strong></p>
+                    <ul style="margin-top: 8px;">
+                        <li><strong>macOS Finder:</strong> Press <code>Cmd + Shift + .</code> (period)</li>
+                        <li><strong>Windows Explorer:</strong> View &rarr; Show &rarr; Hidden items</li>
+                        <li><strong>VS Code:</strong> Hidden files are visible by default in the file tree</li>
+                        <li><strong>Terminal:</strong> Use <code>ls -la</code> to see all files including hidden ones</li>
+                    </ul>
+                </div>
+
                 <h3>Option A: Kiro (Recommended)</h3>
-                <p>The fastest way to get started. Kiro natively supports steering files.</p>
+                <p>The fastest way to get started. Kiro natively supports steering files and agent hooks. Available as both a desktop IDE and CLI.</p>
 
                 <div class="callout info">
                     <h4>Step 1: Install Kiro</h4>
-                    <p>Download from <a href="https://kiro.dev" target="_blank">kiro.dev</a></p>
-                </div>
-
-                <div class="callout info">
-                    <h4>Step 2: Copy Steering Files</h4>
+                    <p><strong>Desktop IDE (GUI):</strong></p>
+                    <ol style="margin: 12px 0;">
+                        <li>Visit <a href="https://kiro.dev" target="_blank">kiro.dev</a></li>
+                        <li>Download the installer for your platform (macOS or Linux)</li>
+                        <li>Run the installer and follow the prompts</li>
+                    </ol>
+                    <p><strong>Command Line (CLI):</strong></p>
                     <div class="code-block">
-<span class="comment"># From the toolkit directory</span>
-cp -r .kiro/steering/* your-project/.kiro/steering/
-cp .kiro/hooks.json your-project/.kiro/
+<span class="comment"># macOS / Linux</span>
+curl -fsSL https://cli.kiro.dev/install | bash
                     </div>
                 </div>
 
                 <div class="callout info">
-                    <h4>Step 3: Open in Kiro and Describe Your Product</h4>
-                    <p>That's it! The steering files automatically guide the AI through the 4-phase workflow.</p>
+                    <h4>Step 2: Copy Files to Your Project</h4>
+                    <p>Choose your preferred method to copy the toolkit files:</p>
+
+                    <p style="margin-top: 16px;"><strong>Method A: Using Finder/File Explorer (GUI)</strong></p>
+                    <ol style="margin: 8px 0;">
+                        <li><strong>Show hidden files first:</strong>
+                            <ul style="margin: 8px 0 8px 20px;">
+                                <li>macOS: Press <code>Cmd + Shift + .</code> in Finder</li>
+                                <li>Windows: View &rarr; Show &rarr; Hidden items</li>
+                            </ul>
+                        </li>
+                        <li>Open this toolkit folder in Finder/Explorer</li>
+                        <li>You should now see the <code>.kiro</code> folder (it will appear slightly faded)</li>
+                        <li><strong>Copy the entire <code>.kiro</code> folder</strong> to your project's root directory</li>
+                        <li>Create a <code>documents</code> folder in your project (for outputs)</li>
+                    </ol>
+
+                    <p style="margin-top: 16px;"><strong>Method B: Using Terminal (CLI)</strong></p>
+                    <div class="code-block">
+<span class="comment"># Navigate to your project</span>
+cd /path/to/your-project
+
+<span class="comment"># Copy the entire .kiro folder (includes steering files and hooks)</span>
+cp -r /path/to/toolkit/.kiro .
+
+<span class="comment"># Create the documents folder for outputs</span>
+mkdir -p documents
+
+<span class="comment"># Verify the files were copied</span>
+ls -la .kiro/
+<span class="comment"># You should see: steering/ and hooks.json</span>
+                    </div>
+                    <p style="margin-top: 16px;"><strong>What gets copied:</strong></p>
+                    <ul style="margin-top: 8px;">
+                        <li><code>.kiro/steering/</code> &mdash; Product workflow, design standards, phase guides</li>
+                        <li><code>.kiro/hooks.json</code> &mdash; Validation hooks and analysis agents</li>
+                    </ul>
                 </div>
 
-                <h3>Option B: Legacy Mode</h3>
-                <p>If your tool doesn't support steering files, use the prompts folder directly.</p>
+                <div class="callout info">
+                    <h4>Step 3: Open in Kiro</h4>
+                    <p><strong>Using the Desktop IDE:</strong></p>
+                    <ol style="margin: 8px 0;">
+                        <li>Launch Kiro from your Applications folder</li>
+                        <li>Click <strong>File &rarr; Open Folder</strong> (or <code>Cmd/Ctrl + O</code>)</li>
+                        <li>Select your project folder</li>
+                        <li>The steering files load automatically &mdash; you'll see them in the <code>.kiro/steering/</code> folder in the file tree</li>
+                    </ol>
+                    <p style="margin-top: 12px;"><strong>Using the CLI:</strong></p>
+                    <div class="code-block">
+<span class="comment"># Navigate to your project and start Kiro</span>
+cd /path/to/your-project
+kiro
+                    </div>
+                </div>
+
+                <div class="callout info">
+                    <h4>Step 4: Describe Your Product</h4>
+                    <p>In the Kiro chat panel, simply describe your product idea. For example:</p>
+                    <div class="code-block" style="background: var(--cream-dark); color: var(--charcoal);">
+"I want to build a fitness tracking app for teenagers that uses AI to create personalized workout plans."
+                    </div>
+                    <p style="margin-top: 12px;">The steering files automatically guide the AI through the 4-phase workflow: Market Research → PRFAQ → PRD → Prototype.</p>
+                </div>
+
+                <h3>Option B: Claude Code / Cursor</h3>
+                <p>A complete workflow guide designed specifically for Claude Code and Cursor users.</p>
+
+                <div class="callout info">
+                    <h4>Step 1: Copy Files to Your Project</h4>
+                    <p>Choose your preferred method to copy the toolkit files:</p>
+
+                    <p style="margin-top: 16px;"><strong>Method A: Using Finder/File Explorer (GUI)</strong></p>
+                    <ol style="margin: 8px 0;">
+                        <li><strong>Show hidden files first:</strong>
+                            <ul style="margin: 8px 0 8px 20px;">
+                                <li>macOS: Press <code>Cmd + Shift + .</code> in Finder</li>
+                                <li>Windows: View &rarr; Show &rarr; Hidden items</li>
+                            </ul>
+                        </li>
+                        <li>Open this toolkit folder in Finder/Explorer</li>
+                        <li>Copy the <code>prompts</code> folder to your project</li>
+                        <li>Copy <code>CLAUDE.md</code> to your project root (for Claude Code)</li>
+                        <li>Copy <code>.cursorrules</code> to your project root (for Cursor &mdash; it will appear faded)</li>
+                        <li>Create a <code>documents</code> folder in your project (for outputs)</li>
+                    </ol>
+
+                    <p style="margin-top: 16px;"><strong>Method B: Using Terminal (CLI)</strong></p>
+                    <div class="code-block">
+<span class="comment"># Navigate to your project</span>
+cd /path/to/your-project
+
+<span class="comment"># Copy the prompts folder</span>
+cp -r /path/to/toolkit/prompts .
+
+<span class="comment"># For Claude Code: copy CLAUDE.md (auto-loads)</span>
+cp /path/to/toolkit/CLAUDE.md .
+
+<span class="comment"># For Cursor: copy .cursorrules (hidden file, auto-loads)</span>
+cp /path/to/toolkit/.cursorrules .
+
+<span class="comment"># Create the documents folder for outputs</span>
+mkdir -p documents
+
+<span class="comment"># Verify the files were copied</span>
+ls -la
+<span class="comment"># You should see: CLAUDE.md, .cursorrules, prompts/</span>
+                    </div>
+                    <p style="margin-top: 16px;"><strong>What gets copied:</strong></p>
+                    <ul style="margin-top: 8px;">
+                        <li><code>CLAUDE.md</code> &mdash; Auto-loaded by Claude Code</li>
+                        <li><code>.cursorrules</code> &mdash; Auto-loaded by Cursor (hidden file)</li>
+                        <li><code>prompts/</code> &mdash; Phase guides and workflow documentation</li>
+                    </ul>
+                </div>
+
+                <div class="callout info">
+                    <h4>Step 2: Open Your Project</h4>
+                    <p><strong>For Cursor (GUI):</strong></p>
+                    <ol style="margin: 8px 0;">
+                        <li>Launch Cursor from your Applications folder</li>
+                        <li>Click <strong>File &rarr; Open Folder</strong> (or <code>Cmd/Ctrl + O</code>)</li>
+                        <li>Select your project folder</li>
+                        <li>The <code>.cursorrules</code> file loads automatically in the background</li>
+                    </ol>
+                    <p style="margin-top: 12px;"><strong>For Claude Code (CLI):</strong></p>
+                    <div class="code-block">
+<span class="comment"># Navigate to your project and start Claude Code</span>
+cd /path/to/your-project
+claude
+                    </div>
+                    <p style="margin-top: 8px;">The <code>CLAUDE.md</code> file loads automatically when Claude Code starts.</p>
+                </div>
+
+                <div class="callout info">
+                    <h4>Step 3: Describe Your Product</h4>
+                    <p>In the chat panel (Cursor) or terminal (Claude Code), describe your product idea. For example:</p>
+                    <div class="code-block" style="background: var(--cream-dark); color: var(--charcoal);">
+"I want to build a fitness tracking app for teenagers that uses AI to create personalized workout plans."
+                    </div>
+                    <p style="margin-top: 12px;">The AI will automatically begin the Discovery phase and guide you through the 4-phase workflow.</p>
+                </div>
 
                 <div class="callout warning">
-                    <h4>Legacy Mode Limitations</h4>
+                    <h4>Differences from Kiro</h4>
                     <ul>
-                        <li>No automated market research (web search may not be available)</li>
-                        <li>Manual prompt loading for each phase</li>
+                        <li>Same 4-phase workflow including market research</li>
+                        <li>Load phase guides manually (vs. Kiro's automatic steering)</li>
                         <li>No automatic validation hooks</li>
                     </ul>
                 </div>
 
-                <h4>Legacy Setup Steps</h4>
-                <ol>
-                    <li>Copy the <code>prompts/</code> folder to your project</li>
-                    <li>Start your AI tool in the project directory</li>
-                    <li>Load guides manually for each phase</li>
-                </ol>
+                <h3>Quick Reference: Copy Commands</h3>
+                <p>For those who prefer the terminal, here are one-liner commands to copy everything at once:</p>
+                <div class="code-block">
+<span class="comment"># For Kiro (copy .kiro folder)</span>
+cp -r /path/to/toolkit/.kiro /path/to/your-project/ && mkdir -p /path/to/your-project/documents
+
+<span class="comment"># For Claude Code</span>
+cp -r /path/to/toolkit/prompts /path/to/your-project/ && cp /path/to/toolkit/CLAUDE.md /path/to/your-project/ && mkdir -p /path/to/your-project/documents
+
+<span class="comment"># For Cursor</span>
+cp -r /path/to/toolkit/prompts /path/to/your-project/ && cp /path/to/toolkit/.cursorrules /path/to/your-project/ && mkdir -p /path/to/your-project/documents
+                </div>
+                <p style="margin-top: 16px;"><strong>Prefer GUI?</strong> See the step-by-step instructions above for using Finder/File Explorer. Remember to press <code>Cmd + Shift + .</code> (macOS) to show hidden files first!</p>
 
                 <h3>File Structure After Setup</h3>
+
+                <h4>For Kiro</h4>
                 <div class="code-block">
 your-project/
-├── .kiro/
+├── <span class="highlight">.kiro/</span>                        <span class="comment">(hidden folder - use Cmd+Shift+. to see)</span>
 │   ├── steering/
-│   │   ├── <span class="highlight">product-workflow.md</span>     <span class="comment">(main orchestration)</span>
-│   │   ├── <span class="highlight">design-standards.md</span>     <span class="comment">(visual standards)</span>
-│   │   ├── market-research.md      <span class="comment">(research guide)</span>
-│   │   ├── prfaq-guide.md          <span class="comment">(PRFAQ guide)</span>
-│   │   ├── prd-guide.md            <span class="comment">(PRD guide)</span>
-│   │   └── prototype-guide.md      <span class="comment">(prototype guide)</span>
-│   └── hooks.json                  <span class="comment">(26 PM-focused agents)</span>
+│   │   ├── product-workflow.md    <span class="comment">(main workflow)</span>
+│   │   ├── design-standards.md    <span class="comment">(anti-slop guidelines)</span>
+│   │   ├── prototype-guide.md     <span class="comment">(prototype requirements)</span>
+│   │   └── ...                    <span class="comment">(phase-specific guides)</span>
+│   └── hooks.json                 <span class="comment">(validation & analysis agents)</span>
+│
+└── documents/                      <span class="comment">(auto-generated outputs)</span>
+    ├── MarketResearch_*.html
+    ├── PRFAQ_*.html
+    ├── PRD_*.html
+    └── Screen_*.html
+                </div>
+
+                <h4>For Claude Code / Cursor</h4>
+                <div class="code-block">
+your-project/
+├── <span class="highlight">CLAUDE.md</span>                     <span class="comment">(auto-loads in Claude Code)</span>
+├── <span class="highlight">.cursorrules</span>                  <span class="comment">(hidden - auto-loads in Cursor)</span>
+├── prompts/
+│   ├── Claude_Code_Workflow.md    <span class="comment">(main workflow guide)</span>
+│   ├── Market Research Agent.md
+│   ├── AI Framing Agent.md
+│   ├── PRFAQ Guide.md
+│   ├── PRD Creation Guide.md
+│   └── Prototype Creation Guide.md
 │
 └── documents/                      <span class="comment">(auto-generated outputs)</span>
     ├── MarketResearch_*.html
@@ -981,10 +1173,11 @@ your-project/
                 </ul>
                 <p><strong>Output:</strong> <code>PRD_[Product]_[Date].html</code> + Kiro spec files</p>
 
-                <div class="callout danger">
-                    <h4>Tech Stack Constraints</h4>
-                    <p><strong>Allowed:</strong> Lambda, ECS, EC2, App Runner, DynamoDB, Aurora, RDS, Amazon Bedrock, Claude API, S3, EFS, API Gateway, AppSync, Cognito</p>
-                    <p><strong>Not Allowed:</strong> OpenAI, Google Cloud, Azure, Vercel, Firebase, Supabase</p>
+                <div class="callout info">
+                    <h4>AWS-Native Architecture</h4>
+                    <p>As an AWS-provided toolkit, designs prefer AWS services for enterprise-grade scalability, security, and compliance:</p>
+                    <p><strong>Compute:</strong> Lambda, ECS, EC2, App Runner &bull; <strong>Database:</strong> DynamoDB, Aurora, RDS &bull; <strong>Generative AI:</strong> Amazon Bedrock, Bedrock AgentCore, Amazon Q &bull; <strong>Storage:</strong> S3, EFS &bull; <strong>API:</strong> API Gateway, AppSync &bull; <strong>Auth:</strong> Cognito</p>
+                    <p style="margin-top: 8px; font-size: 0.9em; opacity: 0.8;">Amazon Bedrock provides access to foundation models from Amazon (Nova) and third-party providers (Anthropic Claude, Meta Llama, and more).</p>
                 </div>
 
                 <h3>Phase 4: Prototype</h3>
@@ -1153,7 +1346,7 @@ samples/
                         <div class="hook-item"><strong>PRFAQ Quality Check</strong><span>Validates headline, problem, solution</span></div>
                         <div class="hook-item"><strong>PRD Requirements Validator</strong><span>EARS syntax, acceptance criteria</span></div>
                         <div class="hook-item"><strong>Design System Consistency</strong><span>Prevents AI slop aesthetics</span></div>
-                        <div class="hook-item"><strong>Tech Stack Compliance</strong><span>AWS/Anthropic only</span></div>
+                        <div class="hook-item"><strong>Tech Stack Validator</strong><span>Prefers AWS-native services</span></div>
                         <div class="hook-item"><strong>Prototype Structure Check</strong><span>Ensures modular files</span></div>
                     </div>
                 </div>
@@ -1209,7 +1402,7 @@ samples/
             <p class="footer-tagline">Transform AI coding assistants into comprehensive product development partners.</p>
             <div class="footer-links">
                 <a href="https://kiro.dev" target="_blank">Kiro</a>
-                <a href="https://github.com" target="_blank">GitHub</a>
+                <a href="https://github.com/aws-samples/sample-amazon-q-cli-prompts-for-product-teams" target="_blank">GitHub</a>
                 <span style="color: rgba(250,247,245,0.4);">MIT-0 License</span>
             </div>
         </footer>
