@@ -6,6 +6,14 @@ inclusion: manual
 
 This steering file guides market research using built-in web search and fetch capabilities. Include this when conducting competitive analysis or market sizing.
 
+## ⛔ CRITICAL TOOL RESTRICTION
+
+**NEVER use web_fetch for images, logos, or binary files. NEVER fetch wiki/fandom pages.**
+
+- web_fetch is ONLY for HTML pages from official company websites
+- For logo URLs, use: `curl -sI "[URL]" | head -5` to verify
+- Do NOT fetch logos.fandom.com, wikipedia image URLs, or image hosting sites
+
 ## Using Built-in Tools
 
 Use the built-in **web_search** tool to find information and **web_fetch** tool to retrieve and analyze web page content. These tools are available without any additional configuration.
