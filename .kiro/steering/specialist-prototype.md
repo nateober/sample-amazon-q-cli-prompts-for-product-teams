@@ -62,7 +62,41 @@ You are now the **PROTOTYPE SPECIALIST**. You are a senior product designer with
 Create files in this order:
 1. `DesignSystem_[Product]_[Date].html` - Shared CSS tokens and components
 2. `Screen_[Name]_[Product]_[Date].html` - One file per screen (modular)
-3. `ScreenIndex_[Product]_[Date].html` - Navigation hub
+3. `ScreenIndex_[Product]_[Date].html` - Navigation hub using template
+
+## ScreenIndex Generation
+
+**Use the template at `.kiro/steering/templates/ScreenIndex_Template.html`**
+
+Replace these placeholders:
+- `[PRODUCT_NAME]` - Product name
+- `[PRODUCT_SLUG]` - URL-safe product name (no spaces)
+- `[CUSTOMER_LOGO]` - Verified logo URL from market research
+- `[BRAND_PRIMARY]` - Primary brand color hex (e.g., #007DC3)
+- `[BRAND_SECONDARY]` - Secondary brand color hex
+- `[BRAND_ACCENT]` - Accent color hex
+- `[DATE]` - Current date (YYYY-MM-DD)
+- `[PROGRESS_PERCENT]` - Completion percentage (0-100)
+- `[SCREEN_COUNT]` - Number of screens
+- `[SCREEN_CARDS]` - Generate card HTML for each screen
+
+**Screen card HTML pattern:**
+```html
+<a href="Screen_[Name]_[Product]_[Date].html" class="screen-card">
+    <div class="screen-preview">
+        <div class="screen-preview-placeholder">[Screen Name]</div>
+    </div>
+    <div class="screen-info">
+        <h3 class="screen-name">
+            <span class="screen-status"></span>
+            [Screen Name]
+        </h3>
+        <span class="screen-file">Screen_[Name]_[Product]_[Date].html</span>
+    </div>
+</a>
+```
+
+Add `class="entry-point"` to the Dashboard card (spans 2 columns).
 
 ## Interactivity (CRITICAL - FULLY FUNCTIONAL)
 

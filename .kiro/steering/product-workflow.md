@@ -82,15 +82,46 @@ The validation agent checks:
 - Fetch review sites to understand real customer complaints
 
 **Step 3: Get Customer Brand Assets (REQUIRED for known companies)** - If building for a specific company:
-- **Logo:** Search "[Company Name] logo png" or "[Company Name] logo svg" or "[Company Name] press kit"
-  - Check their press kit, media page, or newsroom for official logo files
-  - Fetch the actual logo URL (not just note it exists)
-  - For well-known companies (Amazon, Google, Microsoft, etc.), use their official CDN or press kit URLs
-- **Brand Colors:** Visit their website and extract exact hex values using browser dev tools or by observation
-- **Typography:** Identify their font families from their website
-- **Product Logos:** If the product has sub-brands or product logos, fetch those too
 
-**IMPORTANT:** For recognizable companies, you MUST include their actual logo and brand colors in all documents and prototypes. Do not use generic styling when the customer's brand is known.
+**Logo (MANDATORY - do this FIRST):**
+1. Search: "[Company Name] logo png", "[Company Name] press kit", "[Company Name] media assets"
+2. Check these sources in order:
+   - Company's official press/media/newsroom page (e.g., `company.com/press`, `company.com/media`)
+   - Wikipedia (often has official logos with source URLs)
+   - Company's official social media (Twitter/X, LinkedIn banner images)
+   - Brandfetch.com or similar brand asset databases
+3. **Get the actual image URL** - get the direct URL to the image file
+4. **VERIFY the URL works using curl:**
+   ```bash
+   curl -sI "[LOGO_URL]" | head -5
+   ```
+   - Check for `HTTP/2 200` or `HTTP/1.1 200 OK`
+   - If response shows 404, 403, or error → TRY ANOTHER URL
+5. **If the URL fails, TRY ANOTHER** - go back to step 2 and try the next source
+6. **Repeat until you have a working logo URL** - do not proceed without a verified, working logo
+7. **Save to research doc** with the verified URL in a "Brand Assets" section
+
+**Logo verification loop:**
+```
+WHILE logo not verified:
+  1. Find a logo URL from search results
+  2. Run: curl -sI "[URL]" | head -5
+  3. IF response shows 200 OK → logo verified, continue
+  4. IF response shows 404/403/error → try next URL from results
+  5. IF all URLs exhausted → search with different query and repeat
+```
+
+**Example logo searches:**
+- "Discovery Education logo png"
+- "Discovery Education press kit"
+- "Discovery Education brand assets"
+- "site:discoveryeducation.com logo"
+- "[Company] Wikipedia" (check the infobox image)
+
+**Brand Colors:** Visit their website, use browser dev tools (inspect element) to extract exact hex values
+**Typography:** Identify their font families from their website's CSS
+
+**CRITICAL:** You MUST use `curl -sI` to verify the logo URL returns 200 OK before proceeding. If a URL returns 404 or error, try another URL. Do not proceed to PRFAQ without a verified, working logo URL.
 
 **Do not rely on search snippets alone. You must fetch and read pages to get accurate data.**
 
@@ -208,7 +239,7 @@ Apply design standards from `#steering/design-standards.md`.
 
 Save to `./documents/`:
 - `DesignSystem_[ProductName]_[YYYY-MM-DD].html` (shared CSS - create FIRST)
-- `ScreenIndex_[ProductName]_[YYYY-MM-DD].html` (navigation hub)
+- `ScreenIndex_[ProductName]_[YYYY-MM-DD].html` (navigation hub - use template at `.kiro/steering/templates/ScreenIndex_Template.html`)
 - `Screen_[ScreenName]_[ProductName]_[YYYY-MM-DD].html` (one per screen)
 
 #### Validation: Prototype

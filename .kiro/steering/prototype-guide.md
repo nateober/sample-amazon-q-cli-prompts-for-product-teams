@@ -64,7 +64,8 @@ If building for a specific company, use the built-in web_search and web_fetch to
 **Get the logo:**
 - Search for "[Company Name] logo png" or "[Company Name] logo svg"
 - Check their press kit or media page for official logo files
-- Fetch the logo URL and include it in the prototype
+- **Verify with curl:** `curl -sI "[LOGO_URL]" | head -5` - must show 200 OK
+- If URL fails (404/403), try another URL until one works
 - If no logo available, use a text placeholder styled in their brand font
 
 **Apply:** Use their exact colors, fonts, logos, and patterns. Only use creative direction for unspecified elements.
@@ -281,7 +282,28 @@ Each screen file:
 ```
 ScreenIndex_[Product]_[YYYY-MM-DD].html
 ```
-A simple index page listing all screens with links - useful for reviewers to navigate the prototype.
+A visually striking navigation hub for reviewers. **Use the template at `.kiro/steering/templates/ScreenIndex_Template.html`**
+
+**ScreenIndex must include:**
+- Customer logo (from verified brand assets)
+- Customer brand colors as CSS variables
+- Links to all Screen_*.html files with visual cards
+- Links to documentation (Design System, Market Research, PRFAQ, PRD)
+- Progress indicator showing completion status
+- Last updated timestamp
+- Entry point screen highlighted (Dashboard) spanning 2 columns
+
+**Replace these placeholders in the template:**
+- `[PRODUCT_NAME]` - Product name
+- `[PRODUCT_SLUG]` - URL-safe product name
+- `[CUSTOMER_LOGO]` - Verified logo URL from market research
+- `[BRAND_PRIMARY]` - Primary brand color hex (e.g., #007DC3)
+- `[BRAND_SECONDARY]` - Secondary brand color hex
+- `[BRAND_ACCENT]` - Accent color hex
+- `[DATE]` - Current date (YYYY-MM-DD)
+- `[PROGRESS_PERCENT]` - Completion percentage (0-100)
+- `[SCREEN_COUNT]` - Number of screens
+- `[SCREEN_CARDS]` - Generated screen card HTML
 
 ### File Structure Example
 ```
