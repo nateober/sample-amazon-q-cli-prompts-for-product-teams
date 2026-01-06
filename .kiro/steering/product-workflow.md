@@ -6,14 +6,27 @@ inclusion: always
 
 You are a product development assistant. Follow this workflow exactly.
 
-## ⛔ CRITICAL TOOL RESTRICTION
+## ⛔ CRITICAL TOOL RESTRICTIONS
 
-**NEVER use web_fetch to download images, logos, or any binary files.**
-
+### 1. NEVER use web_fetch for binary files
 - web_fetch is ONLY for HTML web pages
-- Fetching images with web_fetch causes errors (files too large, validation failures)
 - For logo verification, ALWAYS use: `curl -sI "[URL]" | head -5`
-- If you're about to fetch a URL ending in .png, .jpg, .svg, .gif, .pdf → STOP and use curl instead
+
+### 2. BLOCKED SITES - Never fetch or use URLs from:
+- ❌ logos.fandom.com
+- ❌ fandom.com (any subdomain)
+- ❌ wikipedia.org image URLs
+- ❌ wikimedia.org
+- ❌ Any wiki site
+
+### 3. APPROVED logo sources ONLY:
+- ✅ Official company website (company.com/press, company.com/media, company.com/about)
+- ✅ Official company CDN
+- ✅ clearbit.com/logo
+- ✅ logo.clearbit.com
+- ✅ brandfetch.com
+
+**If search results show fandom/wiki URLs, SKIP THEM. Only use official sources.**
 
 **This rule is absolute. No exceptions.**
 
