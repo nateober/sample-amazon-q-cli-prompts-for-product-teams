@@ -1,0 +1,323 @@
+{
+  "hooks": [
+    {
+      "name": "Market Research Validator",
+      "description": "Validates market research documents for completeness and quality",
+      "enabled": true,
+      "trigger": {
+        "type": "onFileSave",
+        "pattern": "**/MarketResearch_*.html"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Validate this market research document:\n\n1. Check TAM/SAM/SOM includes actual dollar figures with cited sources\n2. Verify at least 3 competitors analyzed with real pricing data\n3. Confirm pain points are specific (not generic statements)\n4. Check for placeholder text like 'TBD', 'TODO', or '[insert]'\n5. Verify customer branding section if applicable\n\nReport any issues found and suggest fixes."
+      }
+    },
+    {
+      "name": "PRFAQ Quality Check",
+      "description": "Ensures PRFAQ documents follow Working Backwards methodology",
+      "enabled": true,
+      "trigger": {
+        "type": "onFileSave",
+        "pattern": "**/PRFAQ_*.html"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Review this PRFAQ document:\n\n1. Check headline is compelling (not generic)\n2. Verify customer problem is clearly articulated with specifics\n3. Confirm solution description is concrete (not hand-wavy)\n4. Check customer quote feels authentic (not corporate speak)\n5. Verify FAQ addresses skeptical questions (not softballs)\n6. Confirm market research findings are incorporated\n7. Check for placeholder text\n\nReport issues and suggest improvements."
+      }
+    },
+    {
+      "name": "PRD Requirements Validator",
+      "description": "Validates PRD uses EARS syntax and has testable requirements",
+      "enabled": true,
+      "trigger": {
+        "type": "onFileSave",
+        "pattern": "**/PRD_*.html"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Validate this PRD document:\n\n1. Check requirements use EARS syntax (WHEN/THE SYSTEM SHALL)\n2. Verify each requirement is testable and specific\n3. Confirm user stories have acceptance criteria\n4. Check technical design references only AWS/Anthropic services\n5. Verify no vague requirements ('should be fast' instead of '<200ms')\n6. Confirm edge cases and error states are defined\n\nReport validation results."
+      }
+    },
+    {
+      "name": "Kiro Spec EARS Validator",
+      "description": "Validates requirements.md files use proper EARS syntax",
+      "enabled": true,
+      "trigger": {
+        "type": "onFileSave",
+        "pattern": "**/.kiro/specs/**/requirements.md"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Validate this requirements file:\n\n1. Check all requirements use EARS syntax:\n   - WHEN [event] THE SYSTEM SHALL [response]\n   - WHILE [state] THE SYSTEM SHALL [behavior]\n   - IF [condition] THE SYSTEM SHALL [action]\n2. Verify each requirement is testable\n3. Check for missing acceptance criteria\n4. Identify ambiguous language\n5. Ensure requirements have unique IDs (REQ-XXX)\n\nReport any issues found."
+      }
+    },
+    {
+      "name": "Design System Consistency Check",
+      "description": "Ensures HTML prototypes follow design standards and avoid AI slop",
+      "enabled": true,
+      "trigger": {
+        "type": "onFileSave",
+        "pattern": "**/Screen_*.html"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Review this prototype screen for design quality:\n\n1. Verify it uses CSS variables from design system\n2. Check fonts are NOT Inter, Roboto, or Arial (AI slop)\n3. Confirm no purple-to-blue gradients on white backgrounds\n4. Check color hierarchy follows 60-30-10 rule\n5. Verify animations are present for key interactions\n6. Flag any Bootstrap/Tailwind default classes without customization\n7. Check for realistic data (no Lorem ipsum or 'Test User')\n\nReport design issues to fix."
+      }
+    },
+    {
+      "name": "Prototype Modular Structure Check",
+      "description": "Ensures prototypes use modular file structure",
+      "enabled": true,
+      "trigger": {
+        "type": "onAgentStop"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "If prototype files were just created, verify modular structure:\n\n1. Check DesignSystem_*.html exists with shared CSS\n2. Verify ScreenIndex_*.html exists as navigation hub\n3. Confirm individual Screen_*.html files (not one monolithic file)\n4. Check each screen links to shared DesignSystem\n5. Verify navigation between screens uses relative links\n\nIf structure is wrong, explain what needs to be fixed."
+      }
+    },
+    {
+      "name": "Dashboard Updater Reminder",
+      "description": "Reminds to update project dashboard after phase completion",
+      "enabled": true,
+      "trigger": {
+        "type": "onAgentStop"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "If a workflow phase document was just created (MarketResearch, PRFAQ, PRD, or Prototype files):\n\n1. Check if ProjectDashboard_*.html exists\n2. If yes, remind to update it with:\n   - Link to new document\n   - Updated phase status\n   - Progress percentage\n   - Timestamp\n3. If no dashboard exists, suggest creating one\n\nOnly respond if phase documents were created."
+      }
+    },
+    {
+      "name": "AI Framing Validator",
+      "description": "Validates AI framing documents for ML products",
+      "enabled": true,
+      "trigger": {
+        "type": "onFileSave",
+        "pattern": "**/AIFraming_*.html"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Validate this AI Framing document:\n\n1. Check ML problem statement is precise (Given X, predict/classify Y)\n2. Verify inputs and outputs are fully specified\n3. Confirm 3-7 metrics selected with clear thresholds\n4. Check every metric maps to a business outcome\n5. Verify feasibility assessment is realistic\n6. Confirm data strategy addresses availability and quality\n7. Check evaluation plan covers offline/online/human eval\n\nReport any issues found."
+      }
+    },
+    {
+      "name": "Tech Stack Compliance Check",
+      "description": "Ensures technical designs use only AWS/Anthropic stack",
+      "enabled": true,
+      "trigger": {
+        "type": "onFileSave",
+        "pattern": "**/.kiro/specs/**/design.md"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Check this technical design for stack compliance:\n\nALLOWED:\n- Compute: Lambda, ECS, EC2, App Runner\n- Database: DynamoDB, Aurora, RDS\n- AI/ML: Amazon Bedrock, Claude API\n- Storage: S3, EFS\n- API: API Gateway, AppSync\n- Auth: Cognito\n\nNOT ALLOWED:\n- OpenAI, Google Cloud, Azure\n- Vercel, Firebase, Supabase\n- Non-AWS services\n\nReport any non-compliant technologies found."
+      }
+    },
+    {
+      "name": "Run Market Research",
+      "description": "Initiates market research for a new product",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Start market research phase. Reference #steering/market-research.md for the full guide.\n\nUse web_search and web_fetch to:\n1. Find 3-5 competitors with pricing and positioning\n2. Get market size data (TAM/SAM/SOM) with sources\n3. Identify customer pain points from reviews/forums\n4. Research pricing benchmarks\n5. If building for a company, get their logo and brand colors\n\nSave findings to documents/MarketResearch_[ProductName]_[Date].html"
+      }
+    },
+    {
+      "name": "Create PRFAQ",
+      "description": "Creates PRFAQ using Working Backwards methodology",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Create PRFAQ document. Reference #steering/prfaq-guide.md for the full guide.\n\nUsing the market research findings:\n1. Answer the 5 Working Backwards questions\n2. Write compelling press release headline\n3. Create customer-focused press release\n4. Write FAQ addressing real concerns\n5. Incorporate market research insights\n\nSave to documents/PRFAQ_[ProductName]_[Date].html"
+      }
+    },
+    {
+      "name": "Create PRD",
+      "description": "Creates PRD from PRFAQ",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Create PRD document. Reference #steering/prd-guide.md for the full guide.\n\nUsing the PRFAQ:\n1. Define detailed personas\n2. Write requirements in EARS syntax\n3. Create user stories with acceptance criteria\n4. Define success metrics\n5. Specify technical constraints (AWS/Anthropic only)\n6. Identify screens for prototype\n\nSave PRD to documents/PRD_[ProductName]_[Date].html\nCreate Kiro spec in .kiro/specs/[product-slug]/requirements.md"
+      }
+    },
+    {
+      "name": "Create Prototype",
+      "description": "Creates modular prototype from PRD",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Create prototype. Reference #steering/prototype-guide.md and #steering/design-standards.md.\n\nUsing the PRD:\n1. Choose distinctive aesthetic direction (NOT generic AI slop)\n2. Create DesignSystem_[Product]_[Date].html first\n3. Create individual Screen_*.html files (modular, not monolithic)\n4. Create ScreenIndex_[Product]_[Date].html as navigation hub\n5. Use realistic data throughout\n6. Ensure working navigation between screens\n7. Make responsive for desktop, tablet, mobile\n\nOpen each screen in browser after creation to verify."
+      }
+    },
+    {
+      "name": "Customer Interview Simulator",
+      "description": "Roleplay as different personas to stress-test product concepts",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Based on the personas in the PRD, roleplay as each persona to stress-test the product concept:\n\nFor each persona:\n1. Adopt their mindset, goals, and frustrations\n2. React to the product pitch as they would\n3. Ask skeptical questions they would ask\n4. Identify features they'd love vs. hate\n5. Point out what would make them NOT use this product\n6. Suggest what would make them evangelists\n\nProvide honest, persona-authentic feedback - don't be nice, be real."
+      }
+    },
+    {
+      "name": "Competitive Response Analyzer",
+      "description": "Predicts how competitors might respond to this product",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Using the market research and PRD, analyze competitive response:\n\n1. For each major competitor identified:\n   - How might they respond to this product launch?\n   - What features could they quickly copy?\n   - What's their likely pricing response?\n   - How might they position against us?\n\n2. Identify our defensible advantages:\n   - What's hard for competitors to replicate?\n   - Where do we have head start?\n   - What moats can we build?\n\n3. Recommend preemptive strategies:\n   - Features to prioritize for defensibility\n   - Partnerships to pursue\n   - IP to protect\n\nBe realistic about competitive threats."
+      }
+    },
+    {
+      "name": "User Journey Mapper",
+      "description": "Creates detailed user journey maps from requirements",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Create detailed user journey maps for each persona:\n\n1. Map the end-to-end journey:\n   - Awareness: How do they discover the product?\n   - Consideration: What do they evaluate?\n   - Onboarding: First-time experience\n   - Core usage: Daily/weekly interactions\n   - Expansion: Advanced features\n   - Advocacy: Sharing/recommending\n\n2. For each stage identify:\n   - Actions (what they do)\n   - Thoughts (what they're thinking)\n   - Emotions (how they feel)\n   - Pain points (friction)\n   - Opportunities (improvements)\n   - Touchpoints (channels/screens)\n\n3. Create visual journey map in HTML format.\n\nSave to documents/UserJourney_[ProductName]_[Date].html"
+      }
+    },
+    {
+      "name": "Risk Analyzer",
+      "description": "Identifies product and business risks with mitigations",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Conduct product and business risk analysis:\n\n1. Product Risks:\n   - Feature-market fit concerns\n   - Usability concerns\n   - Adoption barriers\n   - Dependency on third parties\n   - Regulatory/compliance issues\n\n2. Business Risks:\n   - Competitive threats\n   - Pricing risks\n   - Market timing\n   - Resource constraints\n   - Go-to-market challenges\n\n3. For each risk:\n   - Likelihood (High/Medium/Low)\n   - Impact (High/Medium/Low)\n   - Mitigation strategy\n   - Early warning indicators\n\nSave to documents/RiskAnalysis_[ProductName]_[Date].html"
+      }
+    },
+    {
+      "name": "Feature Prioritizer (RICE)",
+      "description": "Applies RICE framework to prioritize features",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Apply RICE prioritization to features in the PRD:\n\n1. For each feature/requirement, score:\n   - Reach: How many users affected per quarter? (number)\n   - Impact: How much will it move the needle? (3=massive, 2=high, 1=medium, 0.5=low, 0.25=minimal)\n   - Confidence: How sure are we? (100%=high, 80%=medium, 50%=low)\n   - Effort: Person-weeks to implement (number)\n\n2. Calculate RICE score: (Reach × Impact × Confidence) / Effort\n\n3. Create prioritized backlog:\n   - Tier 1: RICE > 10 (do first)\n   - Tier 2: RICE 5-10 (do next)\n   - Tier 3: RICE < 5 (reconsider)\n\n4. Flag any scoring disagreements with PRD priorities.\n\nOutput as ranked table with scores and rationale."
+      }
+    },
+    {
+      "name": "A/B Test Hypothesis Generator",
+      "description": "Generates experiment hypotheses to validate assumptions",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Generate A/B test hypotheses for key product assumptions:\n\n1. Identify critical assumptions in PRFAQ/PRD:\n   - User behavior assumptions\n   - Value proposition assumptions\n   - Pricing assumptions\n   - Feature importance assumptions\n\n2. For each assumption, create hypothesis:\n   - IF we [change X]\n   - THEN [metric Y] will [increase/decrease]\n   - BECAUSE [rationale]\n\n3. Design the experiment:\n   - Control vs. Variant\n   - Primary metric\n   - Secondary/guardrail metrics\n   - Sample size needed\n   - Duration estimate\n   - Success criteria\n\n4. Prioritize experiments by:\n   - Risk reduced if validated\n   - Ease of implementation\n   - Speed to results\n\nOutput as structured experiment backlog."
+      }
+    },
+    {
+      "name": "Competitor Feature Matrix",
+      "description": "Creates feature comparison matrix",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Create comprehensive competitor feature matrix:\n\n1. Using market research, list features across:\n   - Our product (from PRD)\n   - Each competitor identified\n\n2. Categorize features:\n   - Core functionality\n   - Advanced features\n   - Integrations\n   - Pricing/plans\n   - Support/service\n\n3. For each feature:\n   - Full support (✓)\n   - Partial support (~)\n   - Not supported (✗)\n   - Unknown (?)\n   - Add notes for nuance\n\n4. Calculate scores:\n   - Feature parity %\n   - Unique advantages\n   - Gaps to address\n\n5. Generate visual matrix as HTML table.\n\n6. Add strategic insights:\n   - Where we lead\n   - Where we lag\n   - Differentiation opportunities\n\nSave to documents/FeatureMatrix_[ProductName]_[Date].html"
+      }
+    },
+    {
+      "name": "Microcopy Writer",
+      "description": "Generates UI text, labels, and microcopy for prototype",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Generate comprehensive UI microcopy for the prototype:\n\n1. Navigation & Labels:\n   - Menu items\n   - Button labels\n   - Tab names\n   - Form field labels\n\n2. Helper Text:\n   - Field hints/placeholders\n   - Tooltips\n   - Inline help\n   - Empty state messages\n\n3. Feedback Messages:\n   - Success messages\n   - Loading states\n   - Confirmation dialogs\n   - Warning messages\n   - Error messages (user-friendly)\n\n4. Onboarding:\n   - Welcome messages\n   - Tutorial text\n   - Progress indicators\n\nMatch tone to product personality. Be concise, clear, human.\n\nSave to documents/Microcopy_[ProductName]_[Date].html"
+      }
+    },
+    {
+      "name": "Onboarding Flow Designer",
+      "description": "Designs user onboarding sequence",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Design comprehensive onboarding flow:\n\n1. First-Time User Experience:\n   - Sign-up flow (minimize friction)\n   - Welcome screen\n   - Profile setup (only essentials)\n   - First value moment (aha!)\n\n2. Progressive Disclosure:\n   - What to show immediately\n   - What to reveal over time\n   - When to prompt for more info\n\n3. Guided Tour:\n   - Key features to highlight\n   - Tooltip sequence\n   - Skip option\n   - Progress indicator\n\n4. Empty States:\n   - First-time empty states with CTAs\n   - Sample data option\n   - Quick-start templates\n\n5. Activation Checklist:\n   - Steps to reach 'activated' status\n   - Gamification elements\n   - Celebration moments\n\nCreate screens/flows for prototype.\nSave to documents/Onboarding_[ProductName]_[Date].html"
+      }
+    },
+    {
+      "name": "Meeting Notes to Requirements",
+      "description": "Converts meeting notes into structured requirements",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Convert meeting notes or transcripts into structured requirements:\n\n1. Extract from notes:\n   - Stated needs/wants\n   - Implied requirements\n   - Constraints mentioned\n   - Success criteria discussed\n   - Open questions\n\n2. Convert to EARS format:\n   - WHEN [trigger] THE SYSTEM SHALL [behavior]\n   - Assign requirement IDs\n   - Note source (who said it)\n\n3. Categorize:\n   - Functional requirements\n   - Non-functional requirements\n   - Business rules\n   - Constraints\n   - Out of scope items\n\n4. Flag ambiguities:\n   - Vague statements needing clarification\n   - Conflicting requirements\n   - Missing details\n\n5. Suggest follow-up questions.\n\nOutput in format compatible with requirements.md"
+      }
+    },
+    {
+      "name": "Stakeholder Update Generator",
+      "description": "Generates stakeholder update from current progress",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Generate a stakeholder update based on:\n\n1. Current project dashboard status\n2. Recent document changes (#git)\n3. Current spec status (#spec)\n\nFormat as a brief update with:\n- Progress summary (3-4 bullets)\n- Completed phases\n- Current phase status\n- Next steps\n- Any blockers or risks"
+      }
+    },
+    {
+      "name": "Demo Script Writer",
+      "description": "Creates demo scripts for stakeholder presentations",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Create demo script for stakeholder presentation:\n\n1. Structure:\n   - Opening hook (problem statement)\n   - Product introduction (30 sec)\n   - Key workflow demo (2-3 min)\n   - Feature highlights (1-2 min)\n   - Competitive differentiation\n   - Call to action\n\n2. For each demo step:\n   - What to click/show\n   - What to say (script)\n   - Key point to emphasize\n   - Transition to next step\n\n3. Prepare for questions:\n   - Anticipated objections\n   - Backup slides/screens\n   - Technical deep-dive points\n\n4. Include:\n   - Talking points for each persona type in audience\n   - Fallback plan if demo fails\n   - Success metrics to mention\n\n5. Time markers for pacing.\n\nSave to documents/DemoScript_[ProductName]_[Date].html"
+      }
+    },
+    {
+      "name": "Accessibility Auditor",
+      "description": "Audits prototype for WCAG compliance",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "agentPrompt",
+        "prompt": "Audit the prototype screens for accessibility (WCAG 2.1 AA):\n\n1. Perceivable:\n   - Color contrast ratios (4.5:1 text, 3:1 UI)\n   - Alt text for images\n   - Text resizing support\n\n2. Operable:\n   - Keyboard navigation\n   - Focus indicators\n   - Touch target sizes (44x44px)\n\n3. Understandable:\n   - Clear labels\n   - Error identification\n   - Consistent navigation\n\n4. For each issue found:\n   - Severity (Critical/Major/Minor)\n   - WCAG criterion violated\n   - Location in prototype\n   - Recommended fix\n\nSave report to documents/A11yAudit_[ProductName]_[Date].html"
+      }
+    }
+  ]
+}
