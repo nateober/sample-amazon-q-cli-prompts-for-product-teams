@@ -267,7 +267,13 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
    - Extract the customer's brand colors and typography from THEIR website
    - Record the gate-verified logo URL, brand colors, and fonts — these become part of the shared contract
    - **Subagents must NOT search for logos themselves.** The resolved brand assets are final.
-3. **Create the screen manifest** — a list of EXACT filenames, one per screen:
+3. **Create Design System reference page** — `DesignSystem_[Product]_[Date].html` must exist before any screens. It links to the `.css` file for its own styling. It is a governing specification, not post-hoc documentation.
+4. **Extract Design Token Contract** — read back `[product-slug].css` and extract:
+   - **Theme mode:** light if `--surface-bg` is a light color, dark if dark
+   - **All CSS variable names with values** from the `:root` block
+   - **All component class names** defined in the stylesheet
+   Format these into the Design Token Contract block (referenced in the Phase B subagent template).
+5. **Create the screen manifest** — a list of EXACT filenames, one per screen:
    ```
    SCREEN MANIFEST (copy verbatim into every subagent prompt):
    ─────────────────────────────────────────────────────────
@@ -280,7 +286,7 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
    ...
    ─────────────────────────────────────────────────────────
    ```
-4. **Create the sidebar nav HTML** — the exact `<nav>` block every screen must use:
+6. **Create the sidebar nav HTML** — the exact `<nav>` block every screen must use:
    ```html
    <!-- SIDEBAR NAV — paste verbatim, only change which item gets class="active" -->
    <nav class="sidebar-nav">
@@ -289,17 +295,28 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
      <a class="nav-item" href="Screen_[Name3]_[Product]_[Date].html">[Label3]</a>
    </nav>
    ```
-5. **Compile the brand assets block** (if applicable) — this gets pasted into every subagent prompt:
+7. **Compile the brand assets block** (if applicable) — this gets pasted into every subagent prompt:
    ```
    BRAND ASSETS (use these exactly — do NOT search for alternatives)
    ──────────────────────────────────────────────────────────────────
    Customer: [Company Name]
    Logo URL: [verified URL that returned HTTP 200]
    Logo placement: <img src="[verified URL]" alt="[Company Name] logo" class="header-logo">
-   Brand colors: primary [#hex], secondary [#hex], accent [#hex]
-   Fonts: headings [font name], body [font name]
+   Brand colors: var(--brand-primary), var(--brand-secondary), var(--brand-accent)
+   Fonts: var(--font-display), var(--font-body)
+
+   Note: Raw hex values are defined in the Design Token Contract above. Use var() names in your CSS — never hardcode hex values.
    ──────────────────────────────────────────────────────────────────
    ```
+8. **Compile the Design Token Contract block** — formatted for subagent prompts (see Phase B template for exact format). This block contains the theme mode, every CSS variable with its value, and every component class name extracted from the shared CSS.
+
+**HARD GATE — Do NOT proceed to Phase B until ALL of these exist:**
+- [ ] `[product-slug].css` created in `./documents/`
+- [ ] `DesignSystem_[Product]_[Date].html` created in `./documents/`
+- [ ] Design Token Contract block extracted from CSS
+- [ ] Screen manifest with exact filenames
+- [ ] Sidebar nav HTML template
+- [ ] Brand assets block (if known company)
 
 #### Phase B: Dispatch Screen Subagents
 
