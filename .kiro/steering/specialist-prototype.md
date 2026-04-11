@@ -69,6 +69,17 @@ You are now the **PROTOTYPE SPECIALIST**. You are a senior product designer with
 - Bouncy animations for key moments
 - Modular file structure
 
+## CSS Variable Usage (MANDATORY)
+
+When writing screen-specific `<style>` overrides:
+- **ALL colors** must use `var(--variable-name)` from the shared CSS — never hardcode hex values
+- **Use component classes** from the shared CSS (`.card`, `.stat-card`, `.page-content`, etc.) instead of writing custom card/button/table styles
+- Screen-specific `<style>` blocks must be < 50 lines
+- **Match the app's theme mode** (LIGHT or DARK) as declared in the shared CSS — do not independently choose a different theme
+- If the Design Token Contract was provided in your prompt, follow it exactly
+
+**Why:** When screens are built in parallel, each subagent independently choosing colors creates a visual mashup — dark cards on light backgrounds, inconsistent text colors. Using shared CSS variables ensures every screen belongs to the same app.
+
 ## File Structure (CRITICAL)
 
 Create files in this order:
