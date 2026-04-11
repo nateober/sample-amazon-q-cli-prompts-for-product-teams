@@ -311,6 +311,14 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
    ──────────────────────────────────────────────────────────────────
    ```
 8. **Compile the Design Token Contract block** — formatted for subagent prompts (see Phase B template for exact format). This block contains the theme mode, every CSS variable with its value, and every component class name extracted from the shared CSS.
+9. **Create the Content Link Map** — derived from PRD user flows. For each screen, list content-area elements (dashboard cards, action buttons, CTAs, table row actions) that should link to other screens. Use EXACT filenames from the manifest:
+   ```
+   CONTENT LINK MAP
+   ────────────────
+   Screen_Dashboard → "View Details" card → Screen_[Target]_[Product]_[Date].html
+   Screen_Dashboard → "Start Module" button → Screen_[Target]_[Product]_[Date].html
+   Screen_[Source] → "[Element]" → Screen_[Target]_[Product]_[Date].html
+   ```
 
 **HARD GATE — Do NOT proceed to Phase B until ALL of these exist:**
 - [ ] `[product-slug].css` created in `./documents/`
@@ -319,6 +327,7 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
 - [ ] Screen manifest with exact filenames
 - [ ] Sidebar nav HTML template
 - [ ] Brand assets block (if known company)
+- [ ] Content Link Map with in-content links per screen
 
 #### Phase B: Dispatch Screen Subagents
 
@@ -363,6 +372,16 @@ SIDEBAR NAVIGATION — paste this VERBATIM into your screen
 Notice: "Search Demo" has class="nav-item active" because that is YOUR screen.
 Copy this nav block exactly. Do NOT change any href, label, or ordering.
 
+CONTENT LINKS FROM YOUR SCREEN (wire these into your page content)
+──────────────────────────────────────────────────────────────────
+[paste this screen's entries from the Content Link Map, e.g.:]
+"View Exam Results" card → href="Screen_ExamResults_SmartSearch_2026-04-05.html"
+"Start Study Module" button → href="Screen_StudyModule_SmartSearch_2026-04-05.html"
+
+Every actionable element (card, button, CTA, table row action) that logically leads
+to another screen MUST use the href above. Do NOT use href="#" or javascript:void(0)
+for any element that should navigate to another screen.
+
 BRAND ASSETS (use these exactly — do NOT search for alternatives)
 ──────────────────────────────────────────────────────────────────
 Customer: NewsBank
@@ -402,6 +421,7 @@ RULES
 - Use the component classes from the Design Token Contract — do NOT recreate card/button/table styles in <style>
 - Screen-specific <style> overrides must be < 50 lines and must use var() for any colors
 - This is a [THEME_MODE] mode app — all surfaces and text must match this theme
+- Wire all Content Link Map entries into your page content — do NOT use href="#" or javascript:void(0) for navigation elements
 
 SCREEN REQUIREMENTS
 ───────────────────
@@ -416,13 +436,15 @@ SCREEN REQUIREMENTS
 - The rules section explicitly forbids inventing filenames or modifying the nav
 - The Design Token Contract gives the subagent every CSS variable name, value, and component class — it must use var() references, never hardcoded hex
 - The theme mode (LIGHT/DARK) is explicitly stated so the subagent cannot independently choose a conflicting aesthetic
+- Content Link Map entries tell the subagent which in-content elements (cards, buttons, CTAs) must link to which screens — no dead links
 
 Repeat this template for each screen, changing only:
 - YOUR FILE (the filename and save path)
 - The `active` class position in the sidebar nav
 - SCREEN REQUIREMENTS (the relevant PRD requirements)
+- CONTENT LINKS FROM YOUR SCREEN (the relevant entries from the Content Link Map)
 
-Everything else stays identical across all subagent prompts: CSS link, manifest, nav HTML, brand assets, Design Token Contract, rules.
+Everything else stays identical across all subagent prompts: CSS link, manifest, nav HTML, brand assets, Design Token Contract, Content Link Map, rules.
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_`) and build different navigation panes, causing broken links across every screen.
 
@@ -439,6 +461,7 @@ After all screens are built, BEFORE presenting to user:
    - Check for theme violations: dark colors (#1a1a2e, #0d0d0d, #111) in a light-mode app, or light colors (#fff, #f4f7fb) in a dark-mode app
    - Replace hardcoded values with their `var()` equivalents from `[product-slug].css`
    - If no equivalent variable exists, add it to the shared CSS first
+6. **Content link audit:** Scan all screen files for `href="#"` and `javascript:void(0)` — flag as dead links. For each Content Link Map entry, verify the source screen contains an element with the correct href to the target. Fix dead links with correct filenames.
 
 ```
 Additional context for Prototype Agent:
