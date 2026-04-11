@@ -1170,6 +1170,25 @@ grep -c 'var(--' documents/Screen_[Name].html
 
 **e. Fix violations:** Replace hardcoded values with their `var()` equivalents from the shared CSS. If no equivalent variable exists, add the variable to `[product-slug].css` first, then reference it.
 
+#### 8. Content Link Audit
+
+Verify that in-content links (dashboard cards, action buttons, CTAs, table row actions) connect to the correct screens:
+
+**a. Scan for dead links:**
+```bash
+grep -rn 'href="#"' documents/Screen_*.html
+grep -rn 'javascript:void' documents/Screen_*.html
+```
+Flag any matches — these are elements that should navigate but don't.
+
+**b. Verify Content Link Map entries:**
+For each entry in the Content Link Map, verify the source screen contains an `<a>` or `<button>` element with the correct `href` to the target screen filename.
+
+**c. Flag missing links:**
+Any Content Link Map entry with no matching element in the source screen is a missing in-content link. Add it.
+
+**d. Fix dead links:** Replace `href="#"` and `javascript:void(0)` with the correct target filename from the Content Link Map or screen manifest.
+
 ---
 
 ### Step 10: Produce Handoff Summary
