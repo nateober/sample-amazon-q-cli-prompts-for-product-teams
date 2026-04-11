@@ -295,7 +295,7 @@ Save to `./documents/`:
 1. Shared CSS file (`[product-slug].css`)
 2. Design System reference page (`DesignSystem_[Product]_[Date].html`) — BEFORE any screens
 3. Design Token Contract — extracted from CSS (theme mode, var names, class inventory)
-4. Screen manifest + sidebar nav template
+4. Screen manifest + sidebar nav template + Content Link Map
 5. Individual screen files (`Screen_[Name]_[Product]_[Date].html`)
 6. Screen Index (`ScreenIndex_[Product]_[Date].html`) — LAST
 
@@ -420,7 +420,7 @@ After defining screens from the PRD, create a screen manifest that serves as the
 - The only change per screen: move `active` to that screen's `<a>` tag
 - Subagents MUST NOT modify the nav HTML (no reordering, renaming, adding, or removing items)
 
-**Step 3: Pass to every screen builder:** Each screen's prompt MUST include the CSS filename, the complete manifest, the sidebar nav template, which nav item is active, available CSS class names, and the **Design Token Contract** (all CSS variable names with values, component class inventory, and explicit theme mode — LIGHT or DARK). Subagents must use `var()` for all colors — never hardcoded hex.
+**Step 3: Pass to every screen builder:** Each screen's prompt MUST include the CSS filename, the complete manifest, the sidebar nav template, which nav item is active, available CSS class names, the **Design Token Contract** (all CSS variable names with values, component class inventory, and explicit theme mode — LIGHT or DARK), and the **Content Link Map entries** for that screen (in-content links to other screens — no dead links). Subagents must use `var()` for all colors — never hardcoded hex.
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_` for the same screen) and build different navigation panes, causing broken links across every screen.
 
@@ -481,7 +481,13 @@ Scan all `Screen_*.html` files for hardcoded colors that conflict with the share
 4. **Count per screen:** var(--) references vs hardcoded hex — flag any screen where hardcoded > var()
 5. **Fix:** Replace hardcoded values with `var()` equivalents. Add missing variables to CSS first if needed.
 
-### 6. Logo & Brand Verification (if building for a known company)
+### 6. Content Link Audit
+
+1. **Grep for dead links:** `grep -rn 'href="#"' Screen_*.html` and `grep -rn 'javascript:void' Screen_*.html` — flag all matches
+2. **Verify Content Link Map entries:** For each entry, confirm the source screen has an element with the correct href
+3. **Fix:** Replace dead links with correct filenames from the Content Link Map
+
+### 7. Logo & Brand Verification (if building for a known company)
 Re-run the Logo Gate on the final embedded URL:
 ```
 □ 1. curl -sI "[URL]" returns HTTP 200
@@ -494,7 +500,7 @@ Re-run the Logo Gate on the final embedded URL:
 - Every logo `<img>` alt text must contain the CUSTOMER company name
 - If any check fails → replace with text placeholder and ask the user
 
-### 7. Quick Smoke Test
+### 8. Quick Smoke Test
 - Open the entry point screen and verify it renders with correct styling
 - Click through at least one complete user flow (3+ screens) to verify navigation
 - Verify at least one modal opens and closes
