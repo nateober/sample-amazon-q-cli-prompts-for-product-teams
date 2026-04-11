@@ -431,6 +431,12 @@ After all screens are built, BEFORE presenting to user:
 2. Extract all `href` values from all screen files — every one must match a manifest entry
 3. Verify all screens have identical sidebar nav (only `active` class differs)
 4. Fix any mismatches before proceeding
+5. **Visual consistency check:** Scan `<style>` blocks in all screen files for hardcoded hex color values. For each screen:
+   - Count `var(--` references vs hardcoded `#` hex colors in the `<style>` block
+   - Hardcoded hex count must be LESS than var() count — flag any screen that fails
+   - Check for theme violations: dark colors (#1a1a2e, #0d0d0d, #111) in a light-mode app, or light colors (#fff, #f4f7fb) in a dark-mode app
+   - Replace hardcoded values with their `var()` equivalents from `[product-slug].css`
+   - If no equivalent variable exists, add it to the shared CSS first
 
 ```
 Additional context for Prototype Agent:
