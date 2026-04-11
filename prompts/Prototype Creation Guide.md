@@ -448,7 +448,7 @@ Before building any screens, commit to a **bold, intentional aesthetic direction
 - Customize every component to match your aesthetic
 - Create visual hierarchy through bold contrast
 
-### Step 2: Map User Flows
+### Step 3: Map User Flows
 
 From `prd_context.user_flows`, create flow diagrams:
 
@@ -464,7 +464,7 @@ Flow: [Flow Name]
   [Action]      [Action]       [Action]
 ```
 
-### Step 3: Create Information Architecture
+### Step 4: Create Information Architecture
 
 Map all screens into hierarchy:
 
@@ -490,11 +490,11 @@ Map all screens into hierarchy:
     └── Error
 ```
 
-### Step 3.5: Create Screen Manifest (REQUIRED Before Building Screens)
+### Step 4.5: Create Screen Manifest (REQUIRED Before Building Screens)
 
-After defining the information architecture (Step 3), create a screen manifest that serves as the **single source of truth** for all filenames and navigation. This prevents broken links when screens are built in parallel by subagents.
+After defining the information architecture (Step 4), create a screen manifest that serves as the **single source of truth** for all filenames and navigation. This prevents broken links when screens are built in parallel by subagents.
 
-#### Step 3.5.1: Define the Screen Manifest
+#### Step 4.5.1: Define the Screen Manifest
 
 List every screen with its EXACT filename. No agent may invent alternative names.
 
@@ -522,7 +522,7 @@ List every screen with its EXACT filename. No agent may invent alternative names
 }
 ```
 
-#### Step 3.5.2: Define the Sidebar Nav Template
+#### Step 4.5.2: Define the Sidebar Nav Template
 
 Write the **complete, final sidebar HTML** once. This block is the single source of truth for navigation. Every screen pastes it **verbatim** — the ONLY permitted change is adding `active` to the current screen's nav item.
 
@@ -542,7 +542,7 @@ Write the **complete, final sidebar HTML** once. This block is the single source
 - Subagents MUST NOT modify the nav HTML (no reordering, renaming, adding, or removing items)
 - The only change per screen: move `active` to that screen's `<a>` tag
 
-#### Step 3.5.3: Pass Contract to Every Screen Builder
+#### Step 4.5.3: Pass Contract to Every Screen Builder
 
 Each screen subagent's prompt MUST include ALL of the following — no exceptions:
 
@@ -560,7 +560,7 @@ Each screen subagent's prompt MUST include ALL of the following — no exception
 
 ---
 
-### Step 4: Build Individual Screens
+### Step 5: Build Individual Screens
 
 For each screen in `prd_context.screens_to_build` (using EXACT filenames from the screen manifest):
 
@@ -631,14 +631,14 @@ For each screen in `prd_context.screens_to_build` (using EXACT filenames from th
 - Mobile navigation (hamburger menu)
 - Touch-optimized interactions
 
-### Step 5: Implement Interactivity (CRITICAL - FULLY FUNCTIONAL)
+### Step 6: Implement Interactivity (CRITICAL - FULLY FUNCTIONAL)
 
 **Every prototype must be FULLY CLICKABLE with all interactions working. No static mockups.**
 
 Each screen must include:
 
 **Navigation (All Links Work):**
-- Every button and link navigates to the correct screen using EXACT filenames from the screen manifest (see Step 3.5)
+- Every button and link navigates to the correct screen using EXACT filenames from the screen manifest (see Step 4.5)
 - Navigation menus link to all main screens using the sidebar nav template from the manifest
 - Dashboard cards link to their detail screens
 - "Back" buttons return to the previous screen
@@ -746,7 +746,7 @@ function handleFormSubmit(form) {
 - Toast notifications for actions (auto-dismiss after 3-5 seconds)
 - Success/error states are visually distinct
 
-### Step 6: Build Clickable Prototype
+### Step 7: Build Clickable Prototype
 
 Create single comprehensive HTML file combining all screens:
 
@@ -923,7 +923,7 @@ Create single comprehensive HTML file combining all screens:
 - [ ] ARIA labels on interactive elements
 - [ ] Color contrast meets WCAG AA
 
-### Step 7: Create Prototype Specification
+### Step 8: Create Prototype Specification
 
 Document the prototype in markdown:
 
@@ -1004,7 +1004,7 @@ Document the prototype in markdown:
 - `Screen_[Name]_[Product]_[Date].html` - Individual screen files
 ```
 
-### Step 8: Save All Artifacts
+### Step 9: Save All Artifacts
 
 Save to `./documents/`:
 - `[product-slug].css` (shared CSS — should already exist from Step 1)
@@ -1016,7 +1016,7 @@ Save to `./documents/`:
 
 Verify all files saved successfully.
 
-### Step 8.5: Post-Build Validation (REQUIRED — Run Before Presenting to User)
+### Step 9.5: Post-Build Validation (REQUIRED — Run Before Presenting to User)
 
 After all screens are created, run these checks. **Fix any issues before showing the prototype to the user.**
 
@@ -1027,7 +1027,7 @@ After all screens are created, run these checks. **Fix any issues before showing
 
 #### 2. Link Audit (Compare Against Manifest)
 - For each screen file, extract all `href` values that reference other screen files
-- Compare each link against the screen manifest from Step 3.5
+- Compare each link against the screen manifest from Step 4.5
 - Every referenced filename MUST match an entry in the manifest exactly
 - Every manifest entry MUST have a corresponding file in `./documents/`
 - Flag and fix any mismatches before proceeding
@@ -1110,7 +1110,7 @@ grep -c 'var(--' documents/Screen_[Name].html
 
 ---
 
-### Step 9: Produce Handoff Summary
+### Step 10: Produce Handoff Summary
 
 Generate structured JSON summary per Output Contract.
 
@@ -1320,7 +1320,7 @@ Don't default to solid colors. Create depth and interest:
 
 Before completing, verify:
 
-### Structural Integrity (Step 8.5 — MUST PASS)
+### Structural Integrity (Step 9.5 — MUST PASS)
 - [ ] **Shared `.css` file exists** and all screens link to it via `<link>`
 - [ ] **Screen manifest filenames match** actual files in `./documents/`
 - [ ] **All cross-screen links resolve** (no broken hrefs)
