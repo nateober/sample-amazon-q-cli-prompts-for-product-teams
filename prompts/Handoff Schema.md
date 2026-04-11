@@ -391,6 +391,19 @@ All inter-agent communications use this envelope structure:
       "user_flows_implemented": ["string"],
       "interactive_features": ["string"],
       "design_system_reference_path": "string",
+      "theme_mode": "LIGHT | DARK",
+      "design_token_contract": {
+        "css_variables": [
+          {"name": "string (e.g., --surface-bg)", "value": "string (e.g., #F4F7FB)", "category": "surfaces | text | brand | borders | semantic"}
+        ],
+        "component_classes": ["string (e.g., .card, .stat-card, .page-content, .btn-primary)"]
+      },
+      "brand_assets_verified": {
+        "logo_url": "string | null",
+        "logo_gate_passed": "boolean",
+        "brand_colors": {"primary": "string (#hex)", "secondary": "string (#hex)", "accent": "string (#hex)"},
+        "brand_fonts": {"display": "string", "body": "string"}
+      },
       "clickable_prototype_path": "string"
     },
     "testing_readiness": {
