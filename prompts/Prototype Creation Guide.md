@@ -149,7 +149,56 @@ You must produce:
 - Use a short, stable filename without date suffix: `[product-slug].css` (e.g., `smartsearch.css`)
 - Screen files link to it via: `<link rel="stylesheet" href="[product-slug].css">`
 
-**Separately, create `DesignSystem_[Product]_[Date].html`** — this is a visual reference page that documents colors, components, and typography for human review. It links to the `.css` file for its own styling.
+### Step 2: Create Design System Reference Page (REQUIRED — BEFORE Any Screens)
+
+**Create `DesignSystem_[Product]_[Date].html` BEFORE building any screen files.** This is the visual reference page that documents colors, components, and typography for human review. It links to the `.css` file for its own styling.
+
+The Design System is a **governing specification**, not post-hoc documentation. It must exist before screen files so that:
+- All screen builders (including parallel subagents) reference the same visual contract
+- Theme mode (light or dark) is explicitly decided and documented
+- Component classes and CSS variables are defined once and used everywhere
+
+**The Design System page must include:**
+- Theme declaration (LIGHT or DARK mode)
+- Color palette with all CSS variable names and values
+- Typography scale with font pairings
+- Component library (buttons, cards, forms, navigation) with class names
+- Spacing and layout system
+- Animation tokens
+
+### Step 2.5: Extract Design Token Contract (REQUIRED — BEFORE Any Screens)
+
+After creating the shared CSS and Design System page, extract a **Design Token Contract** from `[product-slug].css`. This contract is pasted into every subagent prompt to prevent theme divergence.
+
+**How to extract:**
+1. Read `[product-slug].css` and collect all `:root` CSS variable names with their values
+2. Collect all class names defined in the CSS (`.card`, `.stat-card`, `.page-content`, `.btn-primary`, etc.)
+3. Determine theme mode: light if `--surface-bg` is a light color, dark if dark
+4. Format into the Design Token Contract template:
+
+```
+DESIGN TOKEN CONTRACT (use these — do NOT hardcode colors)
+──────────────────────────────────────────────────────────
+Theme: [THEME_MODE]
+
+CSS Variables (use var() syntax, never raw hex):
+  Surfaces:    [list var names and values]
+  Text:        [list var names and values]
+  Brand:       [list var names and values]
+  Borders:     [list var names and values]
+  Semantic:    [list var names and values]
+
+Component Classes (use these instead of writing custom styles):
+  [list all class names from the CSS]
+
+RULES:
+- Use var(--variable-name) for ALL colors — never hardcode hex values
+- Use the component classes above — do NOT recreate card/button/table styles in <style>
+- Screen-specific <style> overrides must be < 50 lines and use var() for colors
+- This is a [THEME_MODE] mode app — all surfaces and text must match this theme
+```
+
+This contract block is included in every subagent prompt alongside the Screen Manifest and Brand Assets blocks.
 
 ### Step 1.1: Research Customer Brand (If Applicable)
 
