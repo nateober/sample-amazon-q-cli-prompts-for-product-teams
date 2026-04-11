@@ -200,6 +200,37 @@ RULES:
 
 This contract block is included in every subagent prompt alongside the Screen Manifest and Brand Assets blocks.
 
+### Step 2.7: Persona-Dashboard Analysis (REQUIRED Before Screen Manifest)
+
+Before creating the screen manifest (Step 4.5), analyze PRD personas to decide whether to create one dashboard or multiple persona-specific dashboards.
+
+**Process:**
+1. List each persona's `dashboard_widgets` from the PRD (the widgets, KPIs, and actions they need)
+2. Compare across personas — count how many widgets are shared vs. unique
+3. **Decision rule:**
+   - If personas share **>70%** of dashboard content → one dashboard with role-specific sections (e.g., tabs, collapsible panels)
+   - If personas share **<70%** of dashboard content → create separate dashboard screens per persona (e.g., `Screen_Dashboard_Teacher`, `Screen_Dashboard_Admin`)
+4. Document the decision and reasoning before proceeding to the screen manifest
+
+**Output:** Either one `Screen_Dashboard` entry or multiple persona-specific entries — these feed directly into the screen manifest (Step 4.5).
+
+**Example analysis:**
+```
+Personas: Teacher, Admin, Student
+Teacher widgets: Student progress, Assignment grades, Upcoming deadlines, Class roster
+Admin widgets: System health, User management, License usage, Audit log, Analytics
+Student widgets: My grades, Study progress, Upcoming exams, Flashcard decks
+
+Shared across all 3: 0 widgets (0%)
+Teacher-Admin overlap: 0 widgets (0%)
+Decision: <70% overlap → create 3 separate dashboards
+  - Screen_Dashboard_Teacher_[Product]_[Date].html
+  - Screen_Dashboard_Admin_[Product]_[Date].html
+  - Screen_Dashboard_Student_[Product]_[Date].html
+```
+
+This step ensures that each persona gets a dashboard tailored to their workflow rather than a single dashboard that serves no one well.
+
 ### Step 1.1: Research Customer Brand (If Applicable)
 
 **CRITICAL**: If this prototype is being built for a **real company or customer**, research their existing brand before creating any design direction.
