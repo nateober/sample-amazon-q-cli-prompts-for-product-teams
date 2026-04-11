@@ -291,6 +291,14 @@ function simulateChat(userMessage) {
 
 Save to `./documents/`:
 
+**Build order (STRICT — each step depends on the previous):**
+1. Shared CSS file (`[product-slug].css`)
+2. Design System reference page (`DesignSystem_[Product]_[Date].html`) — BEFORE any screens
+3. Design Token Contract — extracted from CSS (theme mode, var names, class inventory)
+4. Screen manifest + sidebar nav template
+5. Individual screen files (`Screen_[Name]_[Product]_[Date].html`)
+6. Screen Index (`ScreenIndex_[Product]_[Date].html`) — LAST
+
 ### 0. Shared CSS File (create FIRST — REQUIRED)
 ```
 [product-slug].css
@@ -371,6 +379,16 @@ A visually striking navigation hub for reviewers. **Use the template at `.kiro/s
 - **Realistic navigation** - Tests actual user flows between pages
 - **Smaller files** - Each file stays manageable
 
+### HARD GATE — Before Building Any Screens
+
+Do NOT create any `Screen_*.html` files until ALL of these exist in `./documents/`:
+- [ ] `[product-slug].css` — shared stylesheet
+- [ ] `DesignSystem_[Product]_[Date].html` — visual reference page
+- [ ] Design Token Contract block — extracted from CSS (theme mode, CSS variables, component classes)
+- [ ] Screen manifest with exact filenames
+- [ ] Sidebar nav HTML template
+- [ ] Brand assets block (if building for a known company)
+
 ### Screen Manifest (REQUIRED — Create Before Building Screens)
 
 After defining screens from the PRD, create a screen manifest that serves as the **single source of truth** for all filenames and navigation. This prevents broken links when screens are built in parallel.
@@ -402,7 +420,7 @@ After defining screens from the PRD, create a screen manifest that serves as the
 - The only change per screen: move `active` to that screen's `<a>` tag
 - Subagents MUST NOT modify the nav HTML (no reordering, renaming, adding, or removing items)
 
-**Step 3: Pass to every screen builder:** Each screen's prompt MUST include the CSS filename, the complete manifest, the sidebar nav template, which nav item is active, and available CSS class names.
+**Step 3: Pass to every screen builder:** Each screen's prompt MUST include the CSS filename, the complete manifest, the sidebar nav template, which nav item is active, available CSS class names, and the **Design Token Contract** (all CSS variable names with values, component class inventory, and explicit theme mode — LIGHT or DARK). Subagents must use `var()` for all colors — never hardcoded hex.
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_` for the same screen) and build different navigation panes, causing broken links across every screen.
 
@@ -450,7 +468,20 @@ After all screens are created, run these checks. **Fix any issues before showing
 - Screen-specific JS: inline, < 5KB
 - ClickablePrototype: < 300KB (exempt from external CSS rule)
 
-### 5. Logo & Brand Verification (if building for a known company)
+### 5. Visual Consistency Check (Theme Coherence)
+
+Scan all `Screen_*.html` files for hardcoded colors that conflict with the shared CSS theme:
+
+1. **Determine theme mode** from `[product-slug].css`: light if `--surface-bg` is light, dark if dark
+2. **Grep `<style>` blocks** for hardcoded hex values: `grep -oE '#[0-9a-fA-F]{3,8}' Screen_*.html`
+3. **Flag violations:**
+   - Dark colors (#1a1a2e, #0d0d0d, #111) in a light-mode app's cards/content
+   - Light colors (#fff, #f4f7fb) in a dark-mode app's cards/content
+   - Any hardcoded color with a CSS variable equivalent in the shared CSS
+4. **Count per screen:** var(--) references vs hardcoded hex — flag any screen where hardcoded > var()
+5. **Fix:** Replace hardcoded values with `var()` equivalents. Add missing variables to CSS first if needed.
+
+### 6. Logo & Brand Verification (if building for a known company)
 Re-run the Logo Gate on the final embedded URL:
 ```
 □ 1. curl -sI "[URL]" returns HTTP 200
@@ -463,7 +494,7 @@ Re-run the Logo Gate on the final embedded URL:
 - Every logo `<img>` alt text must contain the CUSTOMER company name
 - If any check fails → replace with text placeholder and ask the user
 
-### 6. Quick Smoke Test
+### 7. Quick Smoke Test
 - Open the entry point screen and verify it renders with correct styling
 - Click through at least one complete user flow (3+ screens) to verify navigation
 - Verify at least one modal opens and closes
