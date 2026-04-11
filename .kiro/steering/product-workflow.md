@@ -293,6 +293,8 @@ Before marking complete, verify:
 - [ ] Shared `.css` file exists (NOT `.html` for stylesheets)
 - [ ] Every screen links to shared CSS via `<link rel="stylesheet" href="[product-slug].css">`
 - [ ] Screen manifest created with exact filenames before building screens
+- [ ] Design System reference page exists (created BEFORE any screens)
+- [ ] Design Token Contract extracted from CSS (theme mode, var names, class inventory)
 - [ ] ScreenIndex file exists with links to all screens
 - [ ] Individual Screen_*.html files exist (NOT one monolithic file)
 - [ ] Navigation between screens uses relative links that work
@@ -330,6 +332,8 @@ Before marking complete, verify:
 - [ ] All cross-screen links resolve against manifest
 - [ ] Sidebar nav consistent across all screens
 - [ ] File sizes within budget (CSS < 20KB, Screen < 25KB)
+- [ ] **Visual consistency:** var(--) color references > hardcoded hex in each screen's `<style>` block
+- [ ] **No theme violations:** dark colors (#1a1a2e, #0d0d0d) not in light-mode app; light colors (#fff, #f4f7fb) not in dark-mode app
 - [ ] Logo re-verified via Logo Gate on final embedded URL
 - [ ] Smoke test: click through at least one complete flow
 
