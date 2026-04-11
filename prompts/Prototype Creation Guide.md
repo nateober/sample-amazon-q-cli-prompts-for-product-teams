@@ -551,9 +551,10 @@ Each screen subagent's prompt MUST include ALL of the following — no exception
 3. **The sidebar nav HTML template** — paste the full `<nav>` block verbatim
 4. **Which nav item is active** — specify which `<a>` tag gets `class="nav-item active"`
 5. **The design system class names** available for use
+6. **The Design Token Contract** — all CSS variable names with values, component class inventory, and explicit theme mode (LIGHT/DARK). See Step 2.5 for the contract template. Subagents must use `var()` references for all colors — never hardcoded hex values.
 
 **Explicit instruction to include in every subagent prompt:**
-> "Use ONLY filenames from the manifest for all href links. Do NOT rename, abbreviate, or invent alternative filenames. Paste the sidebar nav HTML VERBATIM — only add 'active' to your screen's nav item."
+> "Use ONLY filenames from the manifest for all href links. Do NOT rename, abbreviate, or invent alternative filenames. Paste the sidebar nav HTML VERBATIM — only add 'active' to your screen's nav item. Use var(--variable-name) for ALL colors — never hardcode hex values. Use component classes from the Design Token Contract instead of writing custom styles."
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_` for the same screen) and build different navigation panes with different links, causing broken navigation across every screen. This has been the #1 prototype defect.
 
@@ -1076,6 +1077,36 @@ If check 4 fails — the image shows a different company, a partner logo, a gene
 - Verify at least one form shows feedback on submit
 
 **This is the authoritative quality gate for prototypes.** Other quality checklists in this file and in `Shared Standards.md` cover design and functional quality; this step covers structural integrity.
+
+#### 7. Visual Consistency Check (Theme Coherence)
+
+Scan all `Screen_*.html` files for hardcoded colors in `<style>` blocks that conflict with the shared CSS theme:
+
+**a. Extract theme mode from `[product-slug].css`:**
+- If `--surface-bg` is a light color (#F4F7FB, #FFFFFF, etc.) → app is **LIGHT** mode
+- If `--surface-bg` is a dark color (#1a1a2e, #0d1117, etc.) → app is **DARK** mode
+
+**b. Grep each screen's `<style>` block for hardcoded hex values:**
+```bash
+grep -oE '#[0-9a-fA-F]{3,8}' documents/Screen_*.html
+```
+
+**c. Flag violations:**
+- LIGHT mode app with dark backgrounds (#1a1a2e, #0d0d0d, #111, etc.) in cards/content areas
+- DARK mode app with light backgrounds (#fff, #f4f7fb, etc.) in cards/content areas
+- Any hardcoded color that has a CSS variable equivalent in the shared CSS
+
+**d. Count var() vs hardcoded hex references per screen:**
+```bash
+# var() references (should be high):
+grep -c 'var(--' documents/Screen_[Name].html
+
+# Hardcoded hex in <style> blocks only (should be low):
+# Extract <style> block, then count hex values
+```
+- Flag any screen where hardcoded hex count > var() count
+
+**e. Fix violations:** Replace hardcoded values with their `var()` equivalents from the shared CSS. If no equivalent variable exists, add the variable to `[product-slug].css` first, then reference it.
 
 ---
 
