@@ -180,6 +180,9 @@ Before proceeding, verify:
 - [ ] **If building for a known company:** brand colors extracted as hex values
 - [ ] **If building for a known company:** typography identified
 - [ ] Brand assets documented in a "Brand Guidelines" section of the research doc
+- [ ] Every data claim (TAM/SAM/SOM, competitor pricing, trends) has a source citation link
+- [ ] Sources section exists at bottom with numbered references
+- [ ] Competitor entries link to their websites
 
 **FAIL if:** Missing sources, fewer than 3 competitors, or generic pain points. Fix and re-validate.
 
