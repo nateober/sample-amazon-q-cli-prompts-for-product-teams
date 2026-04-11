@@ -154,6 +154,16 @@ Use these as defaults when no brand guidelines are provided:
 }
 ```
 
+### CSS Variable Usage in Screens
+
+**MANDATORY for screen-specific `<style>` blocks:**
+- ALL colors must use `var(--variable-name)` from the shared CSS — never hardcode hex values
+- Use component classes from shared CSS (`.card`, `.stat-card`, `.btn-primary`, etc.) instead of writing custom styles
+- Screen-specific `<style>` blocks must be < 50 lines
+- Match the app's theme mode (LIGHT or DARK) as declared in the shared CSS — do not independently choose a different theme
+
+**Why:** When screens are built in parallel by subagents, each independently choosing colors creates a visual mashup — dark cards on light backgrounds, inconsistent text colors. Using shared CSS variables ensures every screen belongs to the same app.
+
 ---
 
 ## Markdown Document Standards
