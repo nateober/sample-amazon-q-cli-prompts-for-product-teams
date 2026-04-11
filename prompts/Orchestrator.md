@@ -273,6 +273,8 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
    - **All CSS variable names with values** from the `:root` block
    - **All component class names** defined in the stylesheet
    Format these into the Design Token Contract block (referenced in the Phase B subagent template).
+4.5. **Analyze PRD personas for dashboard splitting** — For each persona in the PRD, list their `dashboard_widgets`. If personas share <70% of dashboard content, plan separate dashboard screens (e.g., `Screen_Dashboard_Teacher`, `Screen_Dashboard_Admin`). If >70% overlap, plan one dashboard with role-specific sections. Document the decision. The resulting screen list feeds into the screen manifest (step 5).
+
 5. **Create the screen manifest** — a list of EXACT filenames, one per screen:
    ```
    SCREEN MANIFEST (copy verbatim into every subagent prompt):
