@@ -202,15 +202,16 @@ After gathering initial information, tell the user:
 **Load:** `prompts/Prototype Creation Guide.md`
 
 **Create from PRD (modular structure required):**
-1. **Shared CSS file first** - `[product-slug].css` with design tokens and components (`.css` extension required)
-2. **Design System reference page** - `DesignSystem_*.html` for visual documentation
-3. **Screen manifest** - exact filenames + sidebar nav template before building screens
-4. User flow mapping and information architecture
-5. **Individual screen HTML files** (NOT one monolithic file, each links to shared `.css`)
-6. Clickable prototype with navigation
-7. Form validation and interactions
-8. **Post-build validation** - verify CSS loads, all links resolve, file sizes within budget
-9. Project Dashboard (navigation hub)
+1. **Shared CSS file first** - `[product-slug].css` with design tokens and components (`.css` extension REQUIRED — browsers reject `.html` loaded as stylesheets)
+2. **Design System reference page** - `DesignSystem_*.html` (BEFORE any screens — governing spec, not post-hoc docs)
+3. **Design Token Contract** - extract CSS variable names, component classes, and theme mode (LIGHT/DARK) from the shared CSS for subagent prompts
+4. **Screen manifest** - exact filenames + sidebar nav template before building screens
+5. User flow mapping and information architecture
+6. **Individual screen HTML files** (NOT one monolithic file, each links to shared `.css`, uses `var()` for all colors)
+7. Clickable prototype with navigation
+8. Form validation and interactions
+9. **Post-build validation** - verify CSS loads, all links resolve, file sizes within budget
+10. Project Dashboard (navigation hub)
 
 > **Critical: Connect All Screens Together**
 >
@@ -235,6 +236,8 @@ After gathering initial information, tell the user:
 **Checkpoint:**
 - [ ] Shared `.css` file created FIRST (NOT `.html` for stylesheets)
 - [ ] Screen manifest created with exact filenames before building screens
+- [ ] Design Token Contract extracted (theme mode, CSS variables, component classes)
+- [ ] Screen-specific styles use `var()` for colors (no hardcoded hex)
 - [ ] Modular structure (separate files per screen, each links to shared `.css`)
 - [ ] All PRD screens implemented
 - [ ] **All buttons and links navigate to correct screens**
