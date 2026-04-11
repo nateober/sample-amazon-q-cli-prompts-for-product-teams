@@ -583,11 +583,42 @@ Each screen subagent's prompt MUST include ALL of the following — no exception
 4. **Which nav item is active** — specify which `<a>` tag gets `class="nav-item active"`
 5. **The design system class names** available for use
 6. **The Design Token Contract** — all CSS variable names with values, component class inventory, and explicit theme mode (LIGHT/DARK). See Step 2.5 for the contract template. Subagents must use `var()` references for all colors — never hardcoded hex values.
+7. **The Content Link Map entries for this screen** — the specific in-content links (dashboard cards, action buttons, CTAs) that should navigate to other screens, with exact target filenames. Subagents must wire these into their page content. Do NOT use `href="#"` or `javascript:void(0)` for any element that should navigate.
 
 **Explicit instruction to include in every subagent prompt:**
-> "Use ONLY filenames from the manifest for all href links. Do NOT rename, abbreviate, or invent alternative filenames. Paste the sidebar nav HTML VERBATIM — only add 'active' to your screen's nav item. Use var(--variable-name) for ALL colors — never hardcode hex values. Use component classes from the Design Token Contract instead of writing custom styles."
+> "Use ONLY filenames from the manifest for all href links. Do NOT rename, abbreviate, or invent alternative filenames. Paste the sidebar nav HTML VERBATIM — only add 'active' to your screen's nav item. Use var(--variable-name) for ALL colors — never hardcode hex values. Use component classes from the Design Token Contract instead of writing custom styles. Wire all Content Link Map entries into your page content — do NOT use href='#' or javascript:void(0) for elements that should navigate."
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_` for the same screen) and build different navigation panes with different links, causing broken navigation across every screen. This has been the #1 prototype defect.
+
+---
+
+### Step 4.6: Create Content Link Map (REQUIRED Before Building Screens)
+
+After the screen manifest (Step 4.5), create a **Content Link Map** — a list of expected in-content links between screens. This prevents dead links (`href="#"`) in dashboard cards, action buttons, CTAs, and table row actions.
+
+**How to create:**
+1. Read the PRD user flows — every step that crosses a screen boundary becomes an entry
+2. For each screen, list what content-area elements should link to which target screens
+3. Use EXACT filenames from the screen manifest for all targets
+
+**Content Link Map format:**
+```
+CONTENT LINK MAP
+────────────────
+Screen_Dashboard → "View Exam Results" card → Screen_ExamResults_[Product]_[Date].html
+Screen_Dashboard → "Start Study Module" button → Screen_StudyModule_[Product]_[Date].html
+Screen_Dashboard → "Take Mock Exam" card → Screen_MockExam_[Product]_[Date].html
+Screen_ExamResults → "Review Domain" button → Screen_StudyModule_[Product]_[Date].html
+Screen_StudyModule → "Take Practice Quiz" CTA → Screen_DomainQuiz_[Product]_[Date].html
+Screen_DomainQuiz → "Back to Study Module" → Screen_StudyModule_[Product]_[Date].html
+```
+
+Each subagent receives a filtered view showing only their screen's outbound links (see Step 4.5.3 item #7).
+
+**Rules:**
+- Every actionable element (card, button, CTA, table row action) that logically leads to another screen MUST have a Content Link Map entry
+- Target filenames MUST match the screen manifest exactly
+- Do NOT use `href="#"` or `javascript:void(0)` for any element that should navigate to another screen
 
 ---
 
