@@ -10,7 +10,7 @@
       },
       "action": {
         "type": "agentPrompt",
-        "prompt": "Validate this market research:\n\n**Core Research:**\n- [ ] TAM/SAM/SOM with dollar figures AND sources\n- [ ] 3+ competitors with real pricing\n- [ ] Specific pain points (not generic)\n- [ ] No placeholder text (TBD, TODO)\n\n**Brand Assets (for known companies):**\n- [ ] Logo URL captured (actual URL, not just noted)\n- [ ] Brand colors documented with hex values\n- [ ] Typography identified\n- [ ] Brand Assets section included in document\n\nReport issues to fix. If building for a known company, brand assets are REQUIRED."
+        "prompt": "Validate this market research:\n\n**Core Research:**\n- [ ] TAM/SAM/SOM with dollar figures AND sources\n- [ ] 3+ competitors with real pricing\n- [ ] Specific pain points (not generic)\n- [ ] No placeholder text (TBD, TODO)\n\n**Brand Assets (for known companies):**\n- [ ] Logo URL captured (actual URL, not just noted)\n- [ ] Brand colors documented with hex values\n- [ ] Typography identified\n- [ ] Brand Assets section included in document\n\nReport issues to fix. If building for a known company, brand assets are REQUIRED.\n\n**Source Citations (REQUIRED):**\n- [ ] Sources section exists at bottom of document\n- [ ] TAM/SAM/SOM figures have citation links\n- [ ] Competitor entries link to their websites\n- [ ] No unsourced data claims (figures without citations)"
       }
     },
     {
@@ -187,7 +187,7 @@
       "trigger": { "type": "manual" },
       "action": {
         "type": "agentPrompt",
-        "prompt": "Check all Screen_*.html files for FULL INTERACTIVITY:\n\n**Navigation:**\n1. List every href in each file\n2. Verify target file exists\n3. Check for broken links\n4. Verify user flows completable end-to-end\n\n**Interactions:**\n5. Chat interfaces have mocked responses (typing indicator, simulated replies)\n6. Forms have JavaScript for validation, loading, success/error states\n7. Dropdowns have onclick/onchange handlers\n8. Modals have open/close functionality\n9. Data tables have sort/filter/paginate handlers (if applicable)\n\nReport broken links AND missing interactions. Prototype must be FULLY CLICKABLE."
+        "prompt": "Check all Screen_*.html files for FULL INTERACTIVITY:\n\n**Navigation:**\n1. List every href in each file\n2. Verify target file exists\n3. Check for broken links\n4. Verify user flows completable end-to-end\n5. Grep for href=\\\"#\\\" in all Screen_*.html — flag as dead links\n6. Grep for javascript:void in all Screen_*.html — flag as dead links\n7. Every actionable element (card, button, CTA) should link to a real screen, not # or void\n\n**Interactions:**\n8. Chat interfaces have mocked responses (typing indicator, simulated replies)\n9. Forms have JavaScript for validation, loading, success/error states\n10. Dropdowns have onclick/onchange handlers\n11. Modals have open/close functionality\n12. Data tables have sort/filter/paginate handlers (if applicable)\n\nReport broken links AND missing interactions. Prototype must be FULLY CLICKABLE."
       }
     }
   ]
