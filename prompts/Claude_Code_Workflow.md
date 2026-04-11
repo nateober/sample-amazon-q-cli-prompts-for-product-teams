@@ -107,6 +107,8 @@ After gathering initial information, tell the user:
 - [ ] At least 3 competitors with real pricing
 - [ ] Pain points are specific, not generic
 - [ ] No placeholder text (TBD, TODO, [insert])
+- [ ] Every data claim has a source citation link
+- [ ] Sources section at bottom of document with numbered references
 - [ ] File saved successfully
 
 > **Full Approval Mode:** STOP here. Present summary and wait for user approval before proceeding.
@@ -237,6 +239,8 @@ After gathering initial information, tell the user:
 - [ ] Shared `.css` file created FIRST (NOT `.html` for stylesheets)
 - [ ] Screen manifest created with exact filenames before building screens
 - [ ] Design Token Contract extracted (theme mode, CSS variables, component classes)
+- [ ] Content Link Map created (in-content links between screens)
+- [ ] No dead links (`href="#"`, `javascript:void`) in screen content
 - [ ] Screen-specific styles use `var()` for colors (no hardcoded hex)
 - [ ] Modular structure (separate files per screen, each links to shared `.css`)
 - [ ] All PRD screens implemented
