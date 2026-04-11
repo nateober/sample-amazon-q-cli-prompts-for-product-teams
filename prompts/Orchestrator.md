@@ -365,11 +365,29 @@ BRAND ASSETS (use these exactly — do NOT search for alternatives)
 ──────────────────────────────────────────────────────────────────
 Customer: NewsBank
 Logo: <img src="https://verified-url.example.com/newsbank-logo.png" alt="NewsBank logo" class="header-logo">
-Brand colors: primary #1B365D, secondary #4A90D9, accent #F5A623
-Fonts: headings "Merriweather", body "Source Sans Pro"
+Brand colors: var(--brand-primary), var(--brand-secondary), var(--brand-accent)
+Fonts: var(--font-display), var(--font-body)
 
 Do NOT search for logos yourself. Use the exact URL above.
 Do NOT use competitor logos from the market research phase.
+
+DESIGN TOKEN CONTRACT (use these — do NOT hardcode colors)
+──────────────────────────────────────────────────────────
+Theme: [THEME_MODE — e.g., LIGHT or DARK]
+
+CSS Variables (use var() syntax, never raw hex):
+  Surfaces:    [e.g., var(--surface-bg): #F4F7FB  |  var(--surface-card): #FFFFFF]
+  Text:        [e.g., var(--text-primary): #1B2A4A  |  var(--text-secondary): #64748B]
+  Brand:       [e.g., var(--brand-primary): #1B365D  |  var(--brand-accent): #F5A623]
+  Borders:     [e.g., var(--border-light): #E2E8F0]
+  Semantic:    [e.g., var(--color-success): #10B981  |  var(--color-error): #EF4444]
+
+Component Classes (use these instead of writing custom styles):
+  [e.g., .card, .card-title, .card-body, .stat-card, .stat-value, .stat-label,
+   .page-content, .page-header, .btn-primary, .btn-secondary, .btn-ghost,
+   .data-table, .table-header, .table-row, .sidebar-nav, .nav-item]
+
+Values above are examples. Paste the ACTUAL variables and classes extracted from [product-slug].css.
 
 RULES
 ─────
@@ -378,14 +396,14 @@ RULES
 - Do NOT modify the sidebar nav (no reordering, renaming, adding, or removing items)
 - The ONLY change to the nav is which item has "active" — it must be YOUR screen
 - Use the logo URL provided above — do NOT search for a different one
+- Use var(--variable-name) for ALL colors — never hardcode hex values
+- Use the component classes from the Design Token Contract — do NOT recreate card/button/table styles in <style>
+- Screen-specific <style> overrides must be < 50 lines and must use var() for any colors
+- This is a [THEME_MODE] mode app — all surfaces and text must match this theme
 
 SCREEN REQUIREMENTS
 ───────────────────
 [paste PRD requirements for this specific screen]
-
-DESIGN SYSTEM CLASSES AVAILABLE
-───────────────────────────────
-[paste list of CSS class names from smartsearch.css]
 ```
 
 **Key points:**
@@ -394,13 +412,15 @@ DESIGN SYSTEM CLASSES AVAILABLE
 - The full manifest is visible so the subagent knows every valid link target
 - The verified logo URL and brand assets are pre-resolved — subagents don't search for logos themselves
 - The rules section explicitly forbids inventing filenames or modifying the nav
+- The Design Token Contract gives the subagent every CSS variable name, value, and component class — it must use var() references, never hardcoded hex
+- The theme mode (LIGHT/DARK) is explicitly stated so the subagent cannot independently choose a conflicting aesthetic
 
 Repeat this template for each screen, changing only:
 - YOUR FILE (the filename and save path)
 - The `active` class position in the sidebar nav
 - SCREEN REQUIREMENTS (the relevant PRD requirements)
 
-Everything else stays identical across all subagent prompts: CSS link, manifest, nav HTML, brand assets, rules.
+Everything else stays identical across all subagent prompts: CSS link, manifest, nav HTML, brand assets, Design Token Contract, rules.
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_`) and build different navigation panes, causing broken links across every screen.
 
