@@ -323,6 +323,10 @@ Before marking complete, verify:
 - [ ] NO purple-blue gradients on white backgrounds
 - [ ] Distinctive aesthetic direction documented and applied
 - [ ] Realistic data (no "Lorem ipsum", "Test User", or placeholder content)
+- [ ] At least one animation/transition per screen (staggered entrance, hover effect, loading skeleton)
+- [ ] Loading, empty, and error states present where applicable
+- [ ] Every interactive element fully functional (not just styled)
+- [ ] Screen feels like a working app, not a wireframe
 
 **Brand/Product Fidelity (REQUIRED for known companies):**
 - [ ] If modifying existing product: existing UI faithfully recreated
