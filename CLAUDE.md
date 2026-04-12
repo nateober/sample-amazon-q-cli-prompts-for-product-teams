@@ -61,7 +61,7 @@ When building for a recognizable company (Discovery Education, Amazon, Google, e
 1. `[product-slug].css` — Shared CSS file (create FIRST, `.css` extension required)
 2. `DesignSystem_[Product]_[YYYY-MM-DD].html` — Visual reference page (BEFORE any screens)
 3. Design Token Contract — extracted from CSS for subagent prompts (theme mode, color/spacing/shadow/radius/animation/z-index/breakpoint vars, class inventory)
-4. Screen manifest + sidebar nav template + Content Link Map — exact filenames, nav HTML, in-content links between screens
+4. Screen manifest + sidebar shell template + Content Link Map — exact filenames, full sidebar HTML (logo + nav + footer), in-content links between screens
 5. `Screen_[Name]_[Product]_[YYYY-MM-DD].html` — One file per screen (links to `.css`, uses token contract)
 6. `ScreenIndex_[Product]_[YYYY-MM-DD].html` — Navigation hub (LAST, use template at `prompts/ScreenIndex_Template.html`)
 
