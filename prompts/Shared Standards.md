@@ -218,6 +218,25 @@ Use ONLY these tokens for z-index values. Never write arbitrary values like `z-i
 - **Touch targets:** Interactive elements (buttons, links, inputs) must be at least 44px tall (WCAG 2.5.5).
 - **JavaScript scoping:** Event listeners must be scoped to the screen container. No bare `document.addEventListener` without cleanup. No global variables. Store and clear `setTimeout`/`setInterval` IDs.
 
+### Component HTML Structure
+
+Components that use descendant CSS selectors (e.g., `.sidebar-logo img`, `.stat-card .stat-value`) depend on specific DOM nesting. All agents must use the exact HTML patterns below when building these components.
+
+**Required DOM patterns:**
+
+| Component | Required HTML Structure |
+|-----------|----------------------|
+| Sidebar shell | `<aside class="sidebar">` wrapping logo, nav, footer |
+| Sidebar logo | `<div class="sidebar-logo"><img src="..." alt="..."></div>` |
+| Stat card | `<div class="stat-card"><div class="stat-value">...</div><div class="stat-label">...</div></div>` |
+| Data table | `<div class="data-table"><div class="table-header">...</div><div class="table-row">...</div></div>` |
+| Page layout | `<div class="page-content"><div class="page-header">...</div>...</div>` |
+
+**Rules:**
+- Do NOT restructure or reparent elements in the patterns above — CSS depends on the nesting
+- Do NOT use inline styles on elements covered by the shared CSS (e.g., `style="height:22px"` on a logo `<img>`)
+- If you need to customize a component, add a modifier class (e.g., `class="sidebar-logo sidebar-logo--compact"`) rather than changing the structure
+
 ---
 
 ## Markdown Document Standards

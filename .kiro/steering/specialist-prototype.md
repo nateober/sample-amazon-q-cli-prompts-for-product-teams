@@ -83,6 +83,9 @@ When writing screen-specific `<style>` overrides:
 - **Font loading:** Do NOT add `<link>` to Google Fonts in your screen file — all font imports are in the shared CSS only
 - **Touch targets:** All buttons, links, and inputs must be at least 44px tall
 - **JS scoping:** Scope event listeners to the screen container. No bare `document.addEventListener`, no global variables
+- **Sidebar shell:** Paste the entire `<aside class="sidebar">` block from the template — do NOT extract just the `<nav>` or restructure the sidebar wrapper, logo, or footer
+- **Component HTML Patterns:** For components listed in the Design Token Contract's Component HTML Patterns section (sidebar logo, stat card, data table, page layout), use the EXACT DOM structure shown — do NOT restructure or reparent elements. CSS uses descendant selectors that depend on nesting.
+- **No inline styles on shared-CSS elements:** Do NOT add `style="..."` to any element whose class is already styled by the shared CSS (e.g., no `style="height:22px"` on `.sidebar-logo img`). If you need customization, add a modifier class.
 
 **Why:** When screens are built in parallel, each subagent independently choosing colors creates a visual mashup — dark cards on light backgrounds, inconsistent text colors. Using shared CSS variables ensures every screen belongs to the same app.
 
@@ -91,7 +94,7 @@ When writing screen-specific `<style>` overrides:
 Create files in this order:
 1. `[product-slug].css` - Shared CSS (`.css` extension REQUIRED — browsers reject `.html` via `<link rel="stylesheet">`)
 2. `DesignSystem_[Product]_[Date].html` - Visual reference page (links to `.css`)
-3. Screen manifest with exact filenames + sidebar nav template (BEFORE building screens)
+3. Screen manifest with exact filenames + sidebar shell template (BEFORE building screens)
 4. `Screen_[Name]_[Product]_[Date].html` - One file per screen (each links to `.css`, uses manifest filenames)
 5. `ScreenIndex_[Product]_[Date].html` - Navigation hub using template
 
@@ -139,7 +142,7 @@ Add `class="entry-point"` to the Dashboard card (spans 2 columns).
 ### Navigation (All Links Work — Use Manifest Filenames)
 - Use ONLY filenames from the screen manifest for ALL `href` links
 - Do NOT rename, abbreviate, or invent alternative filenames
-- Paste the sidebar nav template VERBATIM — only add `active` to your screen's nav item
+- Paste the sidebar shell template VERBATIM — only add `active` to your screen's nav item
 - Navigation menus → link to all main screens
 - Dashboard cards → link to detail screens
 - "Back" buttons → return to previous screen
