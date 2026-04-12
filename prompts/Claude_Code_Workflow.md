@@ -256,6 +256,12 @@ After gathering initial information, tell the user:
 - [ ] **User flows completable end-to-end**
 - [ ] Forms have validation
 - [ ] Responsive on mobile/tablet/desktop
+- [ ] Chat interfaces mocked with typing indicator and delayed responses (if applicable)
+- [ ] Modals open/close via button, X, backdrop, and Escape key
+- [ ] Data tables sort/filter/paginate (if applicable)
+- [ ] At least one animation or transition per screen
+- [ ] Loading/empty/error states present where applicable
+- [ ] Screens feel like working apps, not wireframes
 - [ ] Realistic data (no Lorem ipsum)
 - [ ] Follows design standards (no AI slop)
 - [ ] Post-build validation passed (see Prototype Creation Guide)
