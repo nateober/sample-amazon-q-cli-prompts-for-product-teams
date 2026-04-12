@@ -60,7 +60,7 @@ When building for a recognizable company (Discovery Education, Amazon, Google, e
 **Build order (STRICT — each step depends on the previous):**
 1. `[product-slug].css` — Shared CSS file (create FIRST, `.css` extension required)
 2. `DesignSystem_[Product]_[YYYY-MM-DD].html` — Visual reference page (BEFORE any screens)
-3. Design Token Contract — extracted from CSS for subagent prompts (theme mode, var names, class inventory)
+3. Design Token Contract — extracted from CSS for subagent prompts (theme mode, color/spacing/shadow/radius/animation/z-index/breakpoint vars, class inventory)
 4. Screen manifest + sidebar nav template + Content Link Map — exact filenames, nav HTML, in-content links between screens
 5. `Screen_[Name]_[Product]_[YYYY-MM-DD].html` — One file per screen (links to `.css`, uses token contract)
 6. `ScreenIndex_[Product]_[YYYY-MM-DD].html` — Navigation hub (LAST, use template at `prompts/ScreenIndex_Template.html`)
@@ -69,6 +69,7 @@ When building for a recognizable company (Discovery Education, Amazon, Google, e
 - Shared styles MUST use `.css` extension — browsers reject `.html` files loaded via `<link rel="stylesheet">` (MIME type mismatch)
 - Screen files link to shared CSS: `<link rel="stylesheet" href="[product-slug].css">`
 - Screen-specific overrides allowed in `<style>` blocks (< 50 lines), must use `var()` for colors
+- Expanded tokens: spacing (var(--space-*)), shadows (var(--shadow-*)), radius (var(--radius-*)), z-index (var(--z-*)), animation durations/easing must also use token variables
 - ClickablePrototype is exempt (single-file, all CSS inline is fine)
 
 **ScreenIndex placeholders to replace:**
