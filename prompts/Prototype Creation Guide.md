@@ -706,6 +706,42 @@ For each screen in `prd_context.screens_to_build` (using EXACT filenames from th
 - Mobile navigation (hamburger menu)
 - Touch-optimized interactions
 
+---
+
+### Step 5.5: CSS Layout & Interactivity Rules
+
+These rules prevent the most common layout and scripting bugs in prototypes. All screen builders (including parallel subagents) must follow them.
+
+#### Height Strategy
+- Chart, graph, and canvas containers MUST have explicit height in `px`, `vh`, or `rem` (e.g., `height: 400px`, `min-height: 50vh`)
+- NEVER use `height: 100%` unless the full parent chain up to `<html>` has explicit heights
+- Use `min-height: 100vh` for full-viewport layouts, not `height: 100%`
+- Dashboard stat cards and widget containers should use `min-height` rather than fixed `height` to allow content to expand
+
+#### Font Loading
+- All `@import url('https://fonts.googleapis.com/...')` statements MUST be in the shared CSS file ONLY
+- Screen files must NOT add their own `<link href="https://fonts.googleapis.com/...">` tags
+- All font imports MUST include `&display=swap` (or `font-display: swap` in `@font-face`)
+- Rationale: Duplicate font loads cause FOIT (Flash of Invisible Text), increase page weight, and can cause inconsistent rendering across screens
+
+#### Z-index Scale
+- Use ONLY the z-index tokens from the Design Token Contract: `var(--z-dropdown)`, `var(--z-sticky)`, `var(--z-modal)`, `var(--z-toast)`, `var(--z-tooltip)`
+- NEVER write arbitrary z-index values (e.g., `z-index: 9999`, `z-index: 10000`)
+- If a new stacking context is needed, add a token to the shared CSS first
+
+#### Touch Targets
+- All interactive elements (buttons, links, inputs, select boxes) MUST be at least 44px tall
+- Clickable cards and icon buttons must have a minimum touch target of 44x44px
+- Use `min-height: 44px` on interactive elements rather than relying on padding alone
+
+#### JavaScript Scoping (for screen-specific scripts)
+- Event listeners MUST be scoped to the screen's container element (e.g., `document.querySelector('.page-content').addEventListener(...)`)
+- NEVER use bare `document.addEventListener` without cleanup — it leaks across screens in the clickable prototype
+- NEVER declare global variables — use `const` or `let` inside an IIFE or scoped block
+- `setTimeout` and `setInterval` IDs must be stored and cleared on screen exit to prevent cross-screen interference
+
+---
+
 ### Step 6: Implement Interactivity (CRITICAL - FULLY FUNCTIONAL)
 
 **Every prototype must be FULLY CLICKABLE with all interactions working. No static mockups.**
