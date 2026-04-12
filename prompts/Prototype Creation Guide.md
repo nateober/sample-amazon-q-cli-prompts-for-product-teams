@@ -658,6 +658,12 @@ Each subagent receives a filtered view showing only their screen's outbound link
 
 For each screen in `prd_context.screens_to_build` (using EXACT filenames from the screen manifest):
 
+#### Quality Bar
+
+Every screen must feel like a working app, not a wireframe. The validation checks in Step 9.5 ensure structural correctness; this section ensures the prototype is actually good.
+
+Before building each screen, ask: "Would a PM open this in a meeting and demo it with confidence?" If not, the screen needs more interaction depth, realistic data, or visual polish. See Step 6 (Interactivity) and the Design Guidelines for specifics.
+
 #### Screen HTML Template
 ```html
 <!DOCTYPE html>
