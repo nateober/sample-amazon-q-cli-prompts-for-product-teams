@@ -289,14 +289,22 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
    ...
    ─────────────────────────────────────────────────────────
    ```
-6. **Create the sidebar nav HTML** — the exact `<nav>` block every screen must use:
+6. **Create the sidebar shell HTML** — the exact `<aside>` block every screen must use:
    ```html
-   <!-- SIDEBAR NAV — paste verbatim, only change which item gets class="active" -->
-   <nav class="sidebar-nav">
-     <a class="nav-item" href="Screen_Dashboard_[Product]_[Date].html">Dashboard</a>
-     <a class="nav-item" href="Screen_[Name2]_[Product]_[Date].html">[Label2]</a>
-     <a class="nav-item" href="Screen_[Name3]_[Product]_[Date].html">[Label3]</a>
-   </nav>
+   <!-- SIDEBAR SHELL — paste verbatim, only change which item gets class="active" -->
+   <aside class="sidebar">
+     <div class="sidebar-logo">
+       <img src="[verified-logo-url]" alt="[Customer] logo">
+     </div>
+     <nav class="sidebar-nav">
+       <a class="nav-item" href="Screen_Dashboard_[Product]_[Date].html">Dashboard</a>
+       <a class="nav-item" href="Screen_[Name2]_[Product]_[Date].html">[Label2]</a>
+       <a class="nav-item" href="Screen_[Name3]_[Product]_[Date].html">[Label3]</a>
+     </nav>
+     <div class="sidebar-footer">
+       <span class="sidebar-version">v1.0 Prototype</span>
+     </div>
+   </aside>
    ```
 7. **Compile the brand assets block** (if applicable) — this gets pasted into every subagent prompt:
    ```
@@ -326,7 +334,7 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
 - [ ] `DesignSystem_[Product]_[Date].html` created in `./documents/`
 - [ ] Design Token Contract block extracted from CSS
 - [ ] Screen manifest with exact filenames
-- [ ] Sidebar nav HTML template
+- [ ] Sidebar shell HTML template (full <aside> with logo, nav, footer)
 - [ ] Brand assets block (if known company)
 - [ ] Content Link Map with in-content links per screen
 
@@ -359,19 +367,28 @@ SCREEN MANIFEST (all screens in this prototype)
 5. Screen_Feedback_SmartSearch_2026-04-05.html
 6. Screen_Settings_SmartSearch_2026-04-05.html
 
-SIDEBAR NAVIGATION — paste this VERBATIM into your screen
-──────────────────────────────────────────────────────────
-<nav class="sidebar-nav">
-  <a class="nav-item" href="Screen_Dashboard_SmartSearch_2026-04-05.html">Dashboard</a>
-  <a class="nav-item active" href="Screen_SearchDemo_SmartSearch_2026-04-05.html">Search Demo</a>
-  <a class="nav-item" href="Screen_BenchmarkManager_SmartSearch_2026-04-05.html">Benchmarks</a>
-  <a class="nav-item" href="Screen_ScoringRuns_SmartSearch_2026-04-05.html">Scoring Runs</a>
-  <a class="nav-item" href="Screen_Feedback_SmartSearch_2026-04-05.html">Feedback</a>
-  <a class="nav-item" href="Screen_Settings_SmartSearch_2026-04-05.html">Settings</a>
-</nav>
+SIDEBAR SHELL — paste this VERBATIM into your screen
+────────────────────────────────────────────────────
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <img src="https://verified-logo-url.example.com/logo.png" alt="CompanyName logo">
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item" href="Screen_Dashboard_SmartSearch_2026-04-05.html">Dashboard</a>
+    <a class="nav-item active" href="Screen_SearchDemo_SmartSearch_2026-04-05.html">Search Demo</a>
+    <a class="nav-item" href="Screen_BenchmarkManager_SmartSearch_2026-04-05.html">Benchmarks</a>
+    <a class="nav-item" href="Screen_ScoringRuns_SmartSearch_2026-04-05.html">Scoring Runs</a>
+    <a class="nav-item" href="Screen_Feedback_SmartSearch_2026-04-05.html">Feedback</a>
+    <a class="nav-item" href="Screen_Settings_SmartSearch_2026-04-05.html">Settings</a>
+  </nav>
+  <div class="sidebar-footer">
+    <span class="sidebar-version">v1.0 Prototype</span>
+  </div>
+</aside>
 
 Notice: "Search Demo" has class="nav-item active" because that is YOUR screen.
-Copy this nav block exactly. Do NOT change any href, label, or ordering.
+Copy this entire <aside> block exactly. Do NOT change any href, label, ordering, or sidebar structure.
+Do NOT restructure the logo wrapper — CSS depends on .sidebar-logo > img nesting.
 
 CONTENT LINKS FROM YOUR SCREEN (wire these into your page content)
 ──────────────────────────────────────────────────────────────────
@@ -416,6 +433,12 @@ Component Classes (use these instead of writing custom styles):
    .page-content, .page-header, .btn-primary, .btn-secondary, .btn-ghost,
    .data-table, .table-header, .table-row, .sidebar-nav, .nav-item]
 
+Component HTML Patterns (use EXACT structure — CSS depends on nesting):
+  Sidebar logo:  <div class="sidebar-logo"><img src="..." alt="..."></div>
+  Stat card:     <div class="stat-card"><div class="stat-value">...</div><div class="stat-label">...</div></div>
+  Data table:    <div class="data-table"><div class="table-header">...</div><div class="table-row">...</div></div>
+  Page layout:   <div class="page-content"><div class="page-header">...</div>...</div>
+
 Values above are examples. Paste the ACTUAL variables and classes extracted from [product-slug].css.
 
 RULES
@@ -439,6 +462,9 @@ RULES
 - All font imports must be in the shared CSS only — do NOT add <link> to Google Fonts in your screen file
 - Interactive elements (buttons, links, inputs) must be at least 44px tall
 - JavaScript event listeners must be scoped — no bare document.addEventListener without cleanup, no global variables
+- Paste the ENTIRE sidebar shell (<aside class="sidebar">...</aside>) — do NOT extract just the <nav> or restructure the sidebar
+- For components in Component HTML Patterns, use the EXACT DOM structure — do NOT restructure or reparent elements (CSS uses descendant selectors like .sidebar-logo img)
+- Do NOT use inline styles on any element whose class is styled by the shared CSS (e.g., no style="height:22px" on the logo img)
 
 SCREEN REQUIREMENTS
 ───────────────────
@@ -455,6 +481,7 @@ SCREEN REQUIREMENTS
 - The theme mode (LIGHT/DARK) is explicitly stated so the subagent cannot independently choose a conflicting aesthetic
 - Content Link Map entries tell the subagent which in-content elements (cards, buttons, CTAs) must link to which screens — no dead links
 - Expanded tokens (spacing, shadows, radius, animation, z-index, breakpoints) ensure visual consistency beyond just colors — same card shadows, same button radii, same animation feel
+- Component HTML Patterns specify the required DOM structure for components with descendant CSS selectors — subagents cannot restructure these
 
 Repeat this template for each screen, changing only:
 - YOUR FILE (the filename and save path)
@@ -462,7 +489,7 @@ Repeat this template for each screen, changing only:
 - SCREEN REQUIREMENTS (the relevant PRD requirements)
 - CONTENT LINKS FROM YOUR SCREEN (the relevant entries from the Content Link Map)
 
-Everything else stays identical across all subagent prompts: CSS link, manifest, nav HTML, brand assets, Design Token Contract, Content Link Map, rules.
+Everything else stays identical across all subagent prompts: CSS link, manifest, sidebar shell, brand assets, Design Token Contract, Content Link Map, rules.
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_`) and build different navigation panes, causing broken links across every screen.
 
@@ -481,6 +508,7 @@ After all screens are built, BEFORE presenting to user:
    - If no equivalent variable exists, add it to the shared CSS first
 6. **Content link audit:** Scan all screen files for `href="#"` and `javascript:void(0)` — flag as dead links. For each Content Link Map entry, verify the source screen contains an element with the correct href to the target. Fix dead links with correct filenames.
 7. **CSS layout check:** Grep all screen files for `height: 100%` (flag as potential layout bug), `fonts.googleapis` in screen files (should only be in shared CSS), and z-index values not matching the scale (100/200/300/400/500). Spot-check spacing token usage vs hardcoded px. Fix violations before presenting.
+8. **Sidebar structural consistency:** Extract the `<aside class="sidebar">` block from every screen. All screens must have identical sidebar markup (only `active` class differs). Flag any screen that: uses a different sidebar wrapper (no `<aside class="sidebar">`), has a different logo structure (not `<div class="sidebar-logo"><img ...></div>`), or has inline styles on sidebar elements. Fix by replacing with the canonical sidebar shell template.
 
 ```
 Additional context for Prototype Agent:
