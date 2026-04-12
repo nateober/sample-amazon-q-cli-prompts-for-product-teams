@@ -199,6 +199,12 @@ CSS Variables (use var() syntax, never raw hex):
 Component Classes (use these instead of writing custom styles):
   [list all class names from the CSS]
 
+Component HTML Patterns (use EXACT structure — CSS depends on nesting):
+  Sidebar logo:  <div class="sidebar-logo"><img src="..." alt="..."></div>
+  Stat card:     <div class="stat-card"><div class="stat-value">...</div><div class="stat-label">...</div></div>
+  Data table:    <div class="data-table"><div class="table-header">...</div><div class="table-row">...</div></div>
+  Page layout:   <div class="page-content"><div class="page-header">...</div>...</div>
+
 RULES:
 - Use var(--variable-name) for ALL colors — never hardcode hex values
 - Use the component classes above — do NOT recreate card/button/table styles in <style>
@@ -209,6 +215,8 @@ RULES:
 - Use radius tokens (var(--radius-*)) for border-radius — avoid arbitrary px values
 - Use z-index tokens (var(--z-*)) for stacking — never write arbitrary z-index (e.g., z-index: 9999)
 - Use animation tokens for transition/animation durations and easing
+- For components listed in Component HTML Patterns, use the EXACT DOM structure shown — CSS depends on nesting (e.g., .sidebar-logo img)
+- Do NOT use inline styles on any element whose class is styled by the shared CSS
 ```
 
 This contract block is included in every subagent prompt alongside the Screen Manifest and Brand Assets blocks.
@@ -566,18 +574,27 @@ List every screen with its EXACT filename. No agent may invent alternative names
 }
 ```
 
-#### Step 4.5.2: Define the Sidebar Nav Template
+#### Step 4.5.2: Define the Sidebar Shell Template
 
-Write the **complete, final sidebar HTML** once. This block is the single source of truth for navigation. Every screen pastes it **verbatim** — the ONLY permitted change is adding `active` to the current screen's nav item.
+Write the **complete, final sidebar shell HTML** once. This block is the single source of truth for the entire sidebar — logo, navigation, and footer. Every screen pastes the ENTIRE shell **verbatim** — the ONLY permitted changes are: (1) adding `active` to the current screen's nav item, and (2) replacing `[VERIFIED-LOGO-URL]` and `[COMPANY-NAME]` with actual values from the brand assets block.
 
 ```html
-<!-- SIDEBAR NAV — paste verbatim into every screen, only change "active" -->
-<nav class="sidebar-nav">
-  <a class="nav-item active" href="Screen_Dashboard_ProductSlug_2026-04-05.html">Dashboard</a>
-  <a class="nav-item" href="Screen_SearchDemo_ProductSlug_2026-04-05.html">Search</a>
-  <a class="nav-item" href="Screen_BenchmarkManager_ProductSlug_2026-04-05.html">Benchmarks</a>
-  <!-- ... one entry per screen in the manifest, using EXACT filenames ... -->
-</nav>
+<!-- SIDEBAR SHELL — paste verbatim into every screen -->
+<!-- ONLY changes: (1) move "active" to your screen's nav item, (2) fill [VERIFIED-LOGO-URL] and [COMPANY-NAME] -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <img src="[VERIFIED-LOGO-URL]" alt="[COMPANY-NAME] logo">
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" href="Screen_Dashboard_ProductSlug_2026-04-05.html">Dashboard</a>
+    <a class="nav-item" href="Screen_SearchDemo_ProductSlug_2026-04-05.html">Search</a>
+    <a class="nav-item" href="Screen_BenchmarkManager_ProductSlug_2026-04-05.html">Benchmarks</a>
+    <!-- ... one entry per screen in the manifest, using EXACT filenames ... -->
+  </nav>
+  <div class="sidebar-footer">
+    <span class="sidebar-version">v1.0 Prototype</span>
+  </div>
+</aside>
 ```
 
 **Rules for the nav template:**
@@ -585,6 +602,8 @@ Write the **complete, final sidebar HTML** once. This block is the single source
 - Every screen in the manifest MUST appear in the nav (no omissions)
 - Subagents MUST NOT modify the nav HTML (no reordering, renaming, adding, or removing items)
 - The only change per screen: move `active` to that screen's `<a>` tag
+- Subagents MUST paste the entire `<aside class="sidebar">` shell — not just the `<nav>` block
+- Subagents MUST NOT add inline styles to any sidebar element (logo, nav items, footer) — all styling comes from the shared CSS
 
 #### Step 4.5.3: Pass Contract to Every Screen Builder
 
@@ -592,14 +611,14 @@ Each screen subagent's prompt MUST include ALL of the following — no exception
 
 1. **The CSS filename** — `<link rel="stylesheet" href="[product-slug].css">`
 2. **The complete screen manifest** — all exact filenames (paste the full list)
-3. **The sidebar nav HTML template** — paste the full `<nav>` block verbatim
+3. **The sidebar shell HTML template** — paste the full `<aside class="sidebar">` block verbatim (includes logo, nav, and footer)
 4. **Which nav item is active** — specify which `<a>` tag gets `class="nav-item active"`
 5. **The design system class names** available for use
 6. **The Design Token Contract** — all CSS variable names with values, component class inventory, and explicit theme mode (LIGHT/DARK). See Step 2.5 for the contract template. Subagents must use `var()` references for all colors — never hardcoded hex values.
 7. **The Content Link Map entries for this screen** — the specific in-content links (dashboard cards, action buttons, CTAs) that should navigate to other screens, with exact target filenames. Subagents must wire these into their page content. Do NOT use `href="#"` or `javascript:void(0)` for any element that should navigate.
 
 **Explicit instruction to include in every subagent prompt:**
-> "Use ONLY filenames from the manifest for all href links. Do NOT rename, abbreviate, or invent alternative filenames. Paste the sidebar nav HTML VERBATIM — only add 'active' to your screen's nav item. Use var(--variable-name) for ALL colors — never hardcode hex values. Use component classes from the Design Token Contract instead of writing custom styles. Wire all Content Link Map entries into your page content — do NOT use href='#' or javascript:void(0) for elements that should navigate."
+> "Use ONLY filenames from the manifest for all href links. Do NOT rename, abbreviate, or invent alternative filenames. Paste the sidebar shell HTML VERBATIM (the entire <aside> block) — only add 'active' to your screen's nav item. Use var(--variable-name) for ALL colors — never hardcode hex values. Use component classes from the Design Token Contract instead of writing custom styles. Wire all Content Link Map entries into your page content — do NOT use href='#' or javascript:void(0) for elements that should navigate."
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_` for the same screen) and build different navigation panes with different links, causing broken navigation across every screen. This has been the #1 prototype defect.
 
@@ -1275,6 +1294,33 @@ Flag any screen where hardcoded spacing values significantly outnumber token ref
 
 **f. Touch target check:**
 Look for buttons, links, and inputs with explicit height < 44px (e.g., `height: 32px`, `height: 28px`). Flag for review.
+
+#### 10. Sidebar Structural Consistency
+
+Verify that every screen's sidebar markup matches the sidebar shell template:
+
+**a. Check for sidebar shell wrapper:**
+```bash
+grep -c '<aside class="sidebar">' documents/Screen_*.html
+```
+Every screen must have this wrapper. Flag any screen that returns 0.
+
+**b. Logo markup consistency:**
+Extract the `<div class="sidebar-logo">` block from every screen. All must use identical structure:
+```html
+<div class="sidebar-logo"><img src="[URL]" alt="[ALT]"></div>
+```
+Flag any screen with: bare `<img>` tags (no wrapper), different class names, `<h1>` or `<span>` wrappers, or inline styles on the logo `<img>`.
+
+**c. No inline styles on shared-CSS elements:**
+```bash
+grep -n 'class="sidebar' documents/Screen_*.html | grep 'style='
+grep -n 'class="nav-item' documents/Screen_*.html | grep 'style='
+grep -n 'class="stat-card' documents/Screen_*.html | grep 'style='
+```
+Flag any matches. Elements styled by the shared CSS must not have inline style overrides.
+
+**d. Fix violations:** Replace non-conforming sidebar markup with the exact sidebar shell template. Remove inline styles on elements covered by shared CSS.
 
 ---
 
