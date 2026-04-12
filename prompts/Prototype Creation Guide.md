@@ -174,10 +174,11 @@ After creating the shared CSS and Design System page, extract a **Design Token C
 1. Read `[product-slug].css` and collect all `:root` CSS variable names with their values
 2. Collect all class names defined in the CSS (`.card`, `.stat-card`, `.page-content`, `.btn-primary`, etc.)
 3. Determine theme mode: light if `--surface-bg` is a light color, dark if dark
-4. Format into the Design Token Contract template:
+4. Collect spacing (--space-*), shadow (--shadow-*), radius (--radius-*), animation (--duration-*, --ease-*), z-index (--z-*), and breakpoint (--bp-*) variables
+5. Format into the Design Token Contract template:
 
 ```
-DESIGN TOKEN CONTRACT (use these — do NOT hardcode colors)
+DESIGN TOKEN CONTRACT (use these — do NOT hardcode values)
 ──────────────────────────────────────────────────────────
 Theme: [THEME_MODE]
 
@@ -188,6 +189,13 @@ CSS Variables (use var() syntax, never raw hex):
   Borders:     [list var names and values]
   Semantic:    [list var names and values]
 
+  Spacing:     [e.g., var(--space-1): 0.25rem | var(--space-2): 0.5rem | ... | var(--space-16): 4rem]
+  Shadows:     [e.g., var(--shadow-sm): 0 1px 3px rgba(0,0,0,0.1) | var(--shadow-md) | var(--shadow-lg) | var(--shadow-xl)]
+  Radius:      [e.g., var(--radius-sm): 4px | var(--radius-md): 8px | var(--radius-lg): 16px | var(--radius-full): 9999px]
+  Animation:   [e.g., var(--duration-fast): 200ms | var(--duration-normal): 300ms | var(--duration-slow): 500ms | var(--ease-default) | var(--ease-bounce)]
+  Z-index:     [e.g., var(--z-dropdown): 100 | var(--z-sticky): 200 | var(--z-modal): 300 | var(--z-toast): 400 | var(--z-tooltip): 500]
+  Breakpoints: [e.g., var(--bp-sm): 640px | var(--bp-md): 768px | var(--bp-lg): 1024px | var(--bp-xl): 1280px]
+
 Component Classes (use these instead of writing custom styles):
   [list all class names from the CSS]
 
@@ -196,6 +204,11 @@ RULES:
 - Use the component classes above — do NOT recreate card/button/table styles in <style>
 - Screen-specific <style> overrides must be < 50 lines and use var() for colors
 - This is a [THEME_MODE] mode app — all surfaces and text must match this theme
+- Use spacing tokens (var(--space-*)) for margins and padding — avoid arbitrary px values
+- Use shadow tokens (var(--shadow-*)) for box-shadow — never write raw shadow values
+- Use radius tokens (var(--radius-*)) for border-radius — avoid arbitrary px values
+- Use z-index tokens (var(--z-*)) for stacking — never write arbitrary z-index (e.g., z-index: 9999)
+- Use animation tokens for transition/animation durations and easing
 ```
 
 This contract block is included in every subagent prompt alongside the Screen Manifest and Brand Assets blocks.
