@@ -565,6 +565,14 @@ Scan all `Screen_*.html` files for layout pitfalls:
 - [ ] Memorable element is noticeable
 - [ ] Would excite stakeholders
 
+### Interaction Depth
+- [ ] Every interactive element WORKS (not just styled) — chat, forms, modals, tables, dropdowns
+- [ ] Loading/spinner states for async operations
+- [ ] Empty states for screens with no data
+- [ ] Error states with retry options
+- [ ] At least one "delight moment" per screen (staggered animation, smooth transition, satisfying feedback)
+- [ ] Realistic data tells a coherent story (not random placeholder values)
+
 ### Anti-Pattern Check
 - [ ] NO purple-blue gradients on white
 - [ ] NO Bootstrap/Tailwind defaults
