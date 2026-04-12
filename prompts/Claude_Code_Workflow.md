@@ -243,6 +243,10 @@ After gathering initial information, tell the user:
 - [ ] No dead links (`href="#"`, `javascript:void`) in screen content
 - [ ] No `height: 100%` in screen styles without explicit parent chain
 - [ ] No font imports in screen files (fonts in shared CSS only)
+- [ ] Sidebar shell template created (full `<aside>` with logo, nav, footer — not just `<nav>`)
+- [ ] Component HTML Patterns documented in Design Token Contract
+- [ ] Sidebar markup consistent across all screens (identical `<aside>` structure)
+- [ ] No inline styles on elements styled by shared CSS
 - [ ] Z-index values use scale tokens only (no arbitrary values)
 - [ ] Interactive elements at least 44px tall
 - [ ] Screen-specific styles use `var()` for colors (no hardcoded hex)
