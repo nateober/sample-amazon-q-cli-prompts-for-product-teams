@@ -77,6 +77,12 @@ When writing screen-specific `<style>` overrides:
 - Screen-specific `<style>` blocks must be < 50 lines
 - **Match the app's theme mode** (LIGHT or DARK) as declared in the shared CSS — do not independently choose a different theme
 - If the Design Token Contract was provided in your prompt, follow it exactly
+- **Spacing/shadow/radius:** Use token variables (`var(--space-*)`, `var(--shadow-*)`, `var(--radius-*)`) instead of hardcoded values
+- **Z-index:** Use only z-index tokens (`var(--z-dropdown)`, `var(--z-modal)`, etc.) — never arbitrary values like `z-index: 9999`
+- **Heights:** Chart/graph/canvas containers must have explicit height (`px`, `vh`, `rem`). Never `height: 100%` without a full explicit parent chain
+- **Font loading:** Do NOT add `<link>` to Google Fonts in your screen file — all font imports are in the shared CSS only
+- **Touch targets:** All buttons, links, and inputs must be at least 44px tall
+- **JS scoping:** Scope event listeners to the screen container. No bare `document.addEventListener`, no global variables
 
 **Why:** When screens are built in parallel, each subagent independently choosing colors creates a visual mashup — dark cards on light backgrounds, inconsistent text colors. Using shared CSS variables ensures every screen belongs to the same app.
 
