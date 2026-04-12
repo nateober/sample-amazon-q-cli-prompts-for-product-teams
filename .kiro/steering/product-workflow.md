@@ -277,9 +277,9 @@ Apply design standards from `#steering/design-standards.md`.
 **Build sequence:**
 1. **Shared CSS file first** — `[product-slug].css` with design tokens and components (`.css` extension REQUIRED — browsers reject `.html` via `<link rel="stylesheet">` due to MIME type mismatch)
 2. **Design System reference page** — `DesignSystem_[ProductName]_[YYYY-MM-DD].html` (visual documentation only, links to `.css`)
-3. **Screen manifest** — exact filenames + sidebar nav template BEFORE building any screens
+3. **Screen manifest** — exact filenames + sidebar shell template BEFORE building any screens
 4. **Brand assets** — Logo Gate (all 5 checks), brand colors, fonts — resolved ONCE, passed to all screen builders
-5. **Individual screen files** — each links to shared `.css`, uses manifest filenames, pastes sidebar nav verbatim
+5. **Individual screen files** — each links to shared `.css`, uses manifest filenames, pastes sidebar shell verbatim
 6. **ScreenIndex** — navigation hub (use template at `.kiro/steering/templates/ScreenIndex_Template.html`)
 7. **Post-build validation** — verify CSS loads, all links resolve against manifest, file sizes within budget, logo is correct
 
@@ -302,6 +302,10 @@ Before marking complete, verify:
 - [ ] Individual Screen_*.html files exist (NOT one monolithic file)
 - [ ] Navigation between screens uses relative links that work
 - [ ] Sidebar nav is consistent across all screens (only `active` class differs)
+- [ ] Sidebar uses full shell template: `<aside class="sidebar">` wrapping logo, nav, and footer
+- [ ] Logo markup identical across all screens: `<div class="sidebar-logo"><img ...></div>`
+- [ ] Component HTML Patterns documented in Design Token Contract
+- [ ] No inline styles on elements covered by shared CSS (sidebar, stat cards, data tables)
 
 **Functionality (FULLY INTERACTIVE):**
 - [ ] All PRD screens implemented (cross-reference requirements)
@@ -333,7 +337,8 @@ Before marking complete, verify:
 **Post-Build Validation (REQUIRED — see `#steering/prototype-guide.md` Step 8.5):**
 - [ ] CSS loads correctly on all screens (no unstyled HTML)
 - [ ] All cross-screen links resolve against manifest
-- [ ] Sidebar nav consistent across all screens
+- [ ] Sidebar shell consistent (full `<aside>` structure matches template, not just nav items)
+- [ ] No inline styles on shared-CSS elements
 - [ ] File sizes within budget (CSS < 20KB, Screen < 25KB)
 - [ ] **Visual consistency:** var(--) color references > hardcoded hex in each screen's `<style>` block
 - [ ] **No theme violations:** dark colors (#1a1a2e, #0d0d0d) not in light-mode app; light colors (#fff, #f4f7fb) not in dark-mode app
