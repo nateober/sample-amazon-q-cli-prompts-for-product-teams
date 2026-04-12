@@ -443,32 +443,67 @@ Values above are examples. Paste the ACTUAL variables and classes extracted from
 
 RULES
 ─────
-- Use ONLY filenames from the manifest above for ALL href links in your screen
+Filenames & Navigation:
+- Use ONLY filenames from the manifest for ALL href links
 - Do NOT rename, abbreviate, or invent alternative filenames
 - Do NOT modify the sidebar nav (no reordering, renaming, adding, or removing items)
-- The ONLY change to the nav is which item has "active" — it must be YOUR screen
-- Use the logo URL provided above — do NOT search for a different one
-- Use var(--variable-name) for ALL colors — never hardcode hex values
-- Use the component classes from the Design Token Contract — do NOT recreate card/button/table styles in <style>
-- Screen-specific <style> overrides must be < 50 lines and must use var() for any colors
+- The ONLY change to the nav: which item has "active" — must be YOUR screen
+- Wire all Content Link Map entries into page content — no href="#" or javascript:void(0)
+
+Styling & Tokens:
+- Use var() for ALL colors — never hardcode hex values
+- Use component classes from the Design Token Contract — do NOT recreate styles in <style>
+- Screen-specific <style> overrides: < 50 lines, must use var() for colors
 - This is a [THEME_MODE] mode app — all surfaces and text must match this theme
-- Wire all Content Link Map entries into your page content — do NOT use href="#" or javascript:void(0) for navigation elements
-- Use spacing tokens (var(--space-*)) for margins/padding — avoid arbitrary px values
-- Use shadow tokens (var(--shadow-*)) for box-shadow — never write raw shadow values
-- Use radius tokens (var(--radius-*)) for border-radius — avoid arbitrary px values
-- Use z-index tokens (var(--z-*)) for stacking — never write arbitrary z-index (e.g., z-index: 9999)
-- Chart/graph/canvas containers MUST have explicit height (px, vh, or rem) — never height: 100% without explicit parent chain
+- Use spacing (var(--space-*)), shadow (var(--shadow-*)), radius (var(--radius-*)), z-index (var(--z-*)) tokens — no arbitrary values
+
+Layout:
+- Chart/graph/canvas containers MUST have explicit height (px, vh, rem) — never height: 100% without explicit parent chain
 - Use min-height: 100vh for full-viewport layouts, not height: 100%
-- All font imports must be in the shared CSS only — do NOT add <link> to Google Fonts in your screen file
 - Interactive elements (buttons, links, inputs) must be at least 44px tall
-- JavaScript event listeners must be scoped — no bare document.addEventListener without cleanup, no global variables
-- Paste the ENTIRE sidebar shell (<aside class="sidebar">...</aside>) — do NOT extract just the <nav> or restructure the sidebar
-- For components in Component HTML Patterns, use the EXACT DOM structure — do NOT restructure or reparent elements (CSS uses descendant selectors like .sidebar-logo img)
-- Do NOT use inline styles on any element whose class is styled by the shared CSS (e.g., no style="height:22px" on the logo img)
+
+Structure & DOM:
+- Paste the ENTIRE sidebar shell (<aside class="sidebar">...</aside>) — do NOT restructure
+- For Component HTML Patterns, use the EXACT DOM structure — CSS depends on nesting
+- Do NOT use inline styles on elements styled by the shared CSS
+
+Assets & Scripts:
+- Use the logo URL provided — do NOT search for a different one
+- All font imports in the shared CSS only — no <link> to Google Fonts in screen files
+- JavaScript event listeners scoped to screen container — no bare document.addEventListener, no global variables
+
+QUALITY EXPECTATIONS
+────────────────────
+Interaction Depth (every element must WORK — no static mockups):
+- Chat: typing indicator → delayed response (1-2s) → message history with scroll
+- Forms: inline validation on blur → loading spinner on submit → success/error feedback
+- Modals: open via button, close via X / backdrop click / Escape key
+- Data tables: sort on header click, filter rows in real-time, paginate
+- Dropdowns: click to open, select updates displayed value, close on selection or outside click
+
+Visual Polish:
+- Each screen should have 1-2 "delight moments" — staggered card entrance, smooth hover transition, satisfying button animation
+- Use animation tokens (var(--duration-*), var(--ease-*)) from the Design Token Contract
+- Realistic data throughout — no "Lorem ipsum", "Test User", or "John Doe"
+- Loading skeletons or spinner states for any async operation
+- Hover states on all interactive elements (buttons, cards, links, table rows)
+
+Design Commitment:
+- Follow the aesthetic direction from the Design System — bold choices, not generic
+- Typography: large headlines that command attention, readable body (16-18px, 1.5 line-height)
+- Color hierarchy: 60% dominant surface, 30% secondary, 10% accent/semantic
+- Negative space is intentional — don't fill every pixel
+- This screen should look like a working app a PM would demo confidently, not a wireframe
 
 SCREEN REQUIREMENTS
 ───────────────────
 [paste PRD requirements for this specific screen]
+
+When implementing these requirements:
+- Make every interactive element fully functional (not just styled)
+- Add realistic sample data that tells a coherent story across the screen
+- Include loading, empty, and error states where applicable
+- Add at least one animation or transition that demonstrates polish
 ```
 
 **Key points:**
@@ -509,6 +544,7 @@ After all screens are built, BEFORE presenting to user:
 6. **Content link audit:** Scan all screen files for `href="#"` and `javascript:void(0)` — flag as dead links. For each Content Link Map entry, verify the source screen contains an element with the correct href to the target. Fix dead links with correct filenames.
 7. **CSS layout check:** Grep all screen files for `height: 100%` (flag as potential layout bug), `fonts.googleapis` in screen files (should only be in shared CSS), and z-index values not matching the scale (100/200/300/400/500). Spot-check spacing token usage vs hardcoded px. Fix violations before presenting.
 8. **Sidebar structural consistency:** Extract the `<aside class="sidebar">` block from every screen. All screens must have identical sidebar markup (only `active` class differs). Flag any screen that: uses a different sidebar wrapper (no `<aside class="sidebar">`), has a different logo structure (not `<div class="sidebar-logo"><img ...></div>`), or has inline styles on sidebar elements. Fix by replacing with the canonical sidebar shell template.
+9. **Quality & depth check:** Open each screen and verify it feels complete and polished — not a wireframe. Check for: working interactions (chat typing, form validation, modal close), loading/empty states, hover transitions, staggered animations, realistic data. Flag any screen that a PM wouldn't demo confidently.
 
 ```
 Additional context for Prototype Agent:
