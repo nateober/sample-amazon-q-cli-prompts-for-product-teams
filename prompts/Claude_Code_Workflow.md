@@ -207,7 +207,7 @@ After gathering initial information, tell the user:
 1. **Shared CSS file first** - `[product-slug].css` with design tokens and components (`.css` extension REQUIRED — browsers reject `.html` loaded as stylesheets)
 2. **Design System reference page** - `DesignSystem_*.html` (BEFORE any screens — governing spec, not post-hoc docs)
 3. **Design Token Contract** - extract CSS variable names, component classes, and theme mode (LIGHT/DARK) from the shared CSS for subagent prompts
-4. **Screen manifest** - exact filenames + sidebar nav template before building screens
+4. **Screen manifest** - exact filenames + sidebar shell template before building screens
 5. User flow mapping and information architecture
 6. **Individual screen HTML files** (NOT one monolithic file, each links to shared `.css`, uses `var()` for all colors)
 7. Clickable prototype with navigation

@@ -330,7 +330,7 @@ Each screen file:
 - Links to the shared CSS via `<link rel="stylesheet" href="[product-slug].css">`
 - Contains only that screen's HTML and screen-specific overrides (< 50 lines in `<style>`)
 - Uses EXACT filenames from the screen manifest for all navigation links
-- Pastes the sidebar nav template verbatim (only `active` class changes)
+- Pastes the sidebar shell template verbatim (entire `<aside>` block, only `active` class changes)
 - Is fully functional standalone
 
 ### 3. Screen Index (navigation hub)

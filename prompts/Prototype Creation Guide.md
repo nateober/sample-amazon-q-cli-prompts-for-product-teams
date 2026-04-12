@@ -769,7 +769,7 @@ Each screen must include:
 
 **Navigation (All Links Work):**
 - Every button and link navigates to the correct screen using EXACT filenames from the screen manifest (see Step 4.5)
-- Navigation menus link to all main screens using the sidebar nav template from the manifest
+- Navigation menus link to all main screens using the sidebar shell template from the manifest
 - Dashboard cards link to their detail screens
 - "Back" buttons return to the previous screen
 - Form submissions navigate to success/confirmation screens
