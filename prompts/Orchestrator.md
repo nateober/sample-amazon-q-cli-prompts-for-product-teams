@@ -480,6 +480,7 @@ After all screens are built, BEFORE presenting to user:
    - Replace hardcoded values with their `var()` equivalents from `[product-slug].css`
    - If no equivalent variable exists, add it to the shared CSS first
 6. **Content link audit:** Scan all screen files for `href="#"` and `javascript:void(0)` — flag as dead links. For each Content Link Map entry, verify the source screen contains an element with the correct href to the target. Fix dead links with correct filenames.
+7. **CSS layout check:** Grep all screen files for `height: 100%` (flag as potential layout bug), `fonts.googleapis` in screen files (should only be in shared CSS), and z-index values not matching the scale (100/200/300/400/500). Spot-check spacing token usage vs hardcoded px. Fix violations before presenting.
 
 ```
 Additional context for Prototype Agent:

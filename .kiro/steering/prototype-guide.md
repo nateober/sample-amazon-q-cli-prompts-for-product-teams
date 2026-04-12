@@ -508,6 +508,16 @@ Re-run the Logo Gate on the final embedded URL:
 
 **This is the authoritative quality gate for prototypes.**
 
+### 9. CSS Layout Check
+
+Scan all `Screen_*.html` files for layout pitfalls:
+
+1. **Height issues:** `grep -n 'height: 100%' Screen_*.html` — flag matches in `<style>` blocks. Replace with explicit px/vh/rem or `min-height: 100vh`.
+2. **Font imports in screens:** `grep -n 'fonts.googleapis' Screen_*.html` — font imports belong in the shared CSS only. Remove from screens.
+3. **Arbitrary z-index:** `grep -oE 'z-index:\s*[0-9]+' Screen_*.html` — valid values are 100, 200, 300, 400, 500. Flag and fix anything else.
+4. **Spacing token ratio:** Count `var(--space` references vs hardcoded `margin/padding...px` values. Flag screens where hardcoded values dominate.
+5. **Touch targets:** Flag buttons/links/inputs with explicit height < 44px.
+
 ## Quality Checklist
 
 ### Functional (FULLY INTERACTIVE)
