@@ -434,6 +434,11 @@ RULES
 - Use shadow tokens (var(--shadow-*)) for box-shadow — never write raw shadow values
 - Use radius tokens (var(--radius-*)) for border-radius — avoid arbitrary px values
 - Use z-index tokens (var(--z-*)) for stacking — never write arbitrary z-index (e.g., z-index: 9999)
+- Chart/graph/canvas containers MUST have explicit height (px, vh, or rem) — never height: 100% without explicit parent chain
+- Use min-height: 100vh for full-viewport layouts, not height: 100%
+- All font imports must be in the shared CSS only — do NOT add <link> to Google Fonts in your screen file
+- Interactive elements (buttons, links, inputs) must be at least 44px tall
+- JavaScript event listeners must be scoped — no bare document.addEventListener without cleanup, no global variables
 
 SCREEN REQUIREMENTS
 ───────────────────
