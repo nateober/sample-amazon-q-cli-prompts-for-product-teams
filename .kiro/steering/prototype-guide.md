@@ -295,7 +295,7 @@ Save to `./documents/`:
 1. Shared CSS file (`[product-slug].css`)
 2. Design System reference page (`DesignSystem_[Product]_[Date].html`) — BEFORE any screens
 3. Design Token Contract — extracted from CSS (theme mode, var names, class inventory)
-4. Screen manifest + sidebar nav template + Content Link Map
+4. Screen manifest + sidebar shell template + Content Link Map
 5. Individual screen files (`Screen_[Name]_[Product]_[Date].html`)
 6. Screen Index (`ScreenIndex_[Product]_[Date].html`) — LAST
 
@@ -404,14 +404,23 @@ After defining screens from the PRD, create a screen manifest that serves as the
 }
 ```
 
-**Step 2: Write the sidebar nav HTML template:**
+**Step 2: Write the sidebar shell HTML template:**
 ```html
-<!-- SIDEBAR NAV — paste verbatim into every screen, only change "active" -->
-<nav class="sidebar-nav">
-  <a class="nav-item active" href="Screen_Dashboard_[Product]_[Date].html">Dashboard</a>
-  <a class="nav-item" href="Screen_[Name2]_[Product]_[Date].html">[Label2]</a>
-  <!-- one entry per screen, using EXACT filenames from manifest -->
-</nav>
+<!-- SIDEBAR SHELL — paste verbatim into every screen -->
+<!-- ONLY changes: (1) move "active" to your screen's nav item, (2) fill [VERIFIED-LOGO-URL] and [COMPANY-NAME] -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <img src="[VERIFIED-LOGO-URL]" alt="[COMPANY-NAME] logo">
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" href="Screen_Dashboard_[Product]_[Date].html">Dashboard</a>
+    <a class="nav-item" href="Screen_[Name2]_[Product]_[Date].html">[Label2]</a>
+    <!-- one entry per screen, using EXACT filenames from manifest -->
+  </nav>
+  <div class="sidebar-footer">
+    <span class="sidebar-version">v1.0 Prototype</span>
+  </div>
+</aside>
 ```
 
 **Rules:**
@@ -419,8 +428,11 @@ After defining screens from the PRD, create a screen manifest that serves as the
 - Every screen in the manifest MUST appear in the nav (no omissions)
 - The only change per screen: move `active` to that screen's `<a>` tag
 - Subagents MUST NOT modify the nav HTML (no reordering, renaming, adding, or removing items)
+- Subagents MUST paste the entire `<aside class="sidebar">` shell — not just the `<nav>` block
+- Subagents MUST NOT add inline styles to sidebar elements — all styling comes from the shared CSS
+- For components with descendant CSS selectors, use the exact DOM structure from the Component HTML Patterns
 
-**Step 3: Pass to every screen builder:** Each screen's prompt MUST include the CSS filename, the complete manifest, the sidebar nav template, which nav item is active, available CSS class names, the **Design Token Contract** (all CSS variable names with values, component class inventory, and explicit theme mode — LIGHT or DARK), and the **Content Link Map entries** for that screen (in-content links to other screens — no dead links). Subagents must use `var()` for all colors — never hardcoded hex.
+**Step 3: Pass to every screen builder:** Each screen's prompt MUST include the CSS filename, the complete manifest, the sidebar shell template, which nav item is active, available CSS class names, the **Design Token Contract** (all CSS variable names with values, component class inventory, and explicit theme mode — LIGHT or DARK), and the **Content Link Map entries** for that screen (in-content links to other screens — no dead links). Subagents must use `var()` for all colors — never hardcoded hex.
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_` for the same screen) and build different navigation panes, causing broken links across every screen.
 
@@ -461,6 +473,8 @@ After all screens are created, run these checks. **Fix any issues before showing
 ### 3. Navigation Completeness
 - Every screen's sidebar nav should contain links to ALL screens in the manifest
 - Verify each screen's sidebar matches the nav template (only the `active` class should differ)
+- Verify each screen's sidebar shell matches the template (entire `<aside>` structure, not just nav items)
+- Verify logo markup is identical across all screens
 
 ### 4. File Size Check
 - Shared CSS: < 20KB
@@ -517,6 +531,13 @@ Scan all `Screen_*.html` files for layout pitfalls:
 3. **Arbitrary z-index:** `grep -oE 'z-index:\s*[0-9]+' Screen_*.html` — valid values are 100, 200, 300, 400, 500. Flag and fix anything else.
 4. **Spacing token ratio:** Count `var(--space` references vs hardcoded `margin/padding...px` values. Flag screens where hardcoded values dominate.
 5. **Touch targets:** Flag buttons/links/inputs with explicit height < 44px.
+
+### 10. Sidebar Structural Consistency
+
+1. **Check for `<aside class="sidebar">`:** Every screen must have this wrapper. Flag any screen that lacks it.
+2. **Logo markup:** Extract `<div class="sidebar-logo">` from every screen. All must use identical structure. Flag bare `<img>` tags, different wrappers, or inline styles on the logo.
+3. **No inline styles on shared-CSS elements:** Grep for `class="sidebar` or `class="nav-item` combined with `style=`. Flag matches.
+4. **Fix:** Replace non-conforming markup with the canonical sidebar shell template.
 
 ## Quality Checklist
 
