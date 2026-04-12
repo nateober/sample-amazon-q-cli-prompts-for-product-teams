@@ -164,6 +164,60 @@ Use these as defaults when no brand guidelines are provided:
 
 **Why:** When screens are built in parallel by subagents, each independently choosing colors creates a visual mashup — dark cards on light backgrounds, inconsistent text colors. Using shared CSS variables ensures every screen belongs to the same app.
 
+### Shadow Scale
+```css
+:root {
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+    --shadow-xl: 0 16px 48px rgba(0,0,0,0.15);
+}
+```
+
+### Border Radius Scale
+```css
+:root {
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+}
+```
+
+### Animation Tokens
+```css
+:root {
+    --duration-fast: 200ms;
+    --duration-normal: 300ms;
+    --duration-slow: 500ms;
+    --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+```
+Use `prefers-reduced-motion` to disable animations for users who request it.
+
+### Z-index Scale
+```css
+:root {
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-modal: 300;
+    --z-toast: 400;
+    --z-tooltip: 500;
+}
+```
+Use ONLY these tokens for z-index values. Never write arbitrary values like `z-index: 9999`.
+
+### Font Loading Rules
+- All `@import` or `<link>` for Google Fonts must be in the shared CSS file only — never in individual screen files
+- Always include `font-display: swap` (or `&display=swap` in the URL) to prevent Flash of Invisible Text
+- Screen files inherit fonts from the shared CSS — no duplicate font declarations
+
+### CSS Layout Rules
+- **Height strategy:** Chart/graph/canvas containers must have explicit height (`px`, `vh`, `rem`). Never use `height: 100%` unless the full parent chain has explicit heights. Use `min-height: 100vh` for full-viewport layouts.
+- **Touch targets:** Interactive elements (buttons, links, inputs) must be at least 44px tall (WCAG 2.5.5).
+- **JavaScript scoping:** Event listeners must be scoped to the screen container. No bare `document.addEventListener` without cleanup. No global variables. Store and clear `setTimeout`/`setInterval` IDs.
+
 ---
 
 ## Markdown Document Standards
