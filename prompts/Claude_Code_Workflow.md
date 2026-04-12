@@ -241,6 +241,10 @@ After gathering initial information, tell the user:
 - [ ] Design Token Contract extracted (theme mode, CSS variables, component classes)
 - [ ] Content Link Map created (in-content links between screens)
 - [ ] No dead links (`href="#"`, `javascript:void`) in screen content
+- [ ] No `height: 100%` in screen styles without explicit parent chain
+- [ ] No font imports in screen files (fonts in shared CSS only)
+- [ ] Z-index values use scale tokens only (no arbitrary values)
+- [ ] Interactive elements at least 44px tall
 - [ ] Screen-specific styles use `var()` for colors (no hardcoded hex)
 - [ ] Modular structure (separate files per screen, each links to shared `.css`)
 - [ ] All PRD screens implemented
