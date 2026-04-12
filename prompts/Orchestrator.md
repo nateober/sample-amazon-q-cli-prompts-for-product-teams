@@ -272,6 +272,7 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
    - **Theme mode:** light if `--surface-bg` is a light color, dark if dark
    - **All CSS variable names with values** from the `:root` block
    - **All component class names** defined in the stylesheet
+   - **Spacing tokens** (--space-*), **shadow tokens** (--shadow-*), **radius tokens** (--radius-*), **animation tokens** (--duration-*, --ease-*), **z-index tokens** (--z-*), and **breakpoint tokens** (--bp-*)
    Format these into the Design Token Contract block (referenced in the Phase B subagent template).
 4.5. **Analyze PRD personas for dashboard splitting** — For each persona in the PRD, list their `dashboard_widgets`. If personas share <70% of dashboard content, plan separate dashboard screens (e.g., `Screen_Dashboard_Teacher`, `Screen_Dashboard_Admin`). If >70% overlap, plan one dashboard with role-specific sections. Document the decision. The resulting screen list feeds into the screen manifest (step 5).
 
@@ -392,7 +393,7 @@ Fonts: var(--font-display), var(--font-body)
 Do NOT search for logos yourself. Use the exact URL above.
 Do NOT use competitor logos from the market research phase.
 
-DESIGN TOKEN CONTRACT (use these — do NOT hardcode colors)
+DESIGN TOKEN CONTRACT (use these — do NOT hardcode values)
 ──────────────────────────────────────────────────────────
 Theme: [THEME_MODE — e.g., LIGHT or DARK]
 
@@ -402,6 +403,13 @@ CSS Variables (use var() syntax, never raw hex):
   Brand:       [e.g., var(--brand-primary): #1B365D  |  var(--brand-accent): #F5A623]
   Borders:     [e.g., var(--border-light): #E2E8F0]
   Semantic:    [e.g., var(--color-success): #10B981  |  var(--color-error): #EF4444]
+
+  Spacing:     [e.g., var(--space-1): 0.25rem | var(--space-2): 0.5rem | ... | var(--space-16): 4rem]
+  Shadows:     [e.g., var(--shadow-sm): 0 1px 3px rgba(0,0,0,0.1) | var(--shadow-md) | var(--shadow-lg) | var(--shadow-xl)]
+  Radius:      [e.g., var(--radius-sm): 4px | var(--radius-md): 8px | var(--radius-lg): 16px | var(--radius-full): 9999px]
+  Animation:   [e.g., var(--duration-fast): 200ms | var(--duration-normal): 300ms | var(--duration-slow): 500ms | var(--ease-default) | var(--ease-bounce)]
+  Z-index:     [e.g., var(--z-dropdown): 100 | var(--z-sticky): 200 | var(--z-modal): 300 | var(--z-toast): 400 | var(--z-tooltip): 500]
+  Breakpoints: [e.g., var(--bp-sm): 640px | var(--bp-md): 768px | var(--bp-lg): 1024px | var(--bp-xl): 1280px]
 
 Component Classes (use these instead of writing custom styles):
   [e.g., .card, .card-title, .card-body, .stat-card, .stat-value, .stat-label,
@@ -422,6 +430,10 @@ RULES
 - Screen-specific <style> overrides must be < 50 lines and must use var() for any colors
 - This is a [THEME_MODE] mode app — all surfaces and text must match this theme
 - Wire all Content Link Map entries into your page content — do NOT use href="#" or javascript:void(0) for navigation elements
+- Use spacing tokens (var(--space-*)) for margins/padding — avoid arbitrary px values
+- Use shadow tokens (var(--shadow-*)) for box-shadow — never write raw shadow values
+- Use radius tokens (var(--radius-*)) for border-radius — avoid arbitrary px values
+- Use z-index tokens (var(--z-*)) for stacking — never write arbitrary z-index (e.g., z-index: 9999)
 
 SCREEN REQUIREMENTS
 ───────────────────
@@ -437,6 +449,7 @@ SCREEN REQUIREMENTS
 - The Design Token Contract gives the subagent every CSS variable name, value, and component class — it must use var() references, never hardcoded hex
 - The theme mode (LIGHT/DARK) is explicitly stated so the subagent cannot independently choose a conflicting aesthetic
 - Content Link Map entries tell the subagent which in-content elements (cards, buttons, CTAs) must link to which screens — no dead links
+- Expanded tokens (spacing, shadows, radius, animation, z-index, breakpoints) ensure visual consistency beyond just colors — same card shadows, same button radii, same animation feel
 
 Repeat this template for each screen, changing only:
 - YOUR FILE (the filename and save path)
