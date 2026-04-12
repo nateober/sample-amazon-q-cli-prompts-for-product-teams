@@ -1238,6 +1238,44 @@ Any Content Link Map entry with no matching element in the source screen is a mi
 
 **d. Fix dead links:** Replace `href="#"` and `javascript:void(0)` with the correct target filename from the Content Link Map or screen manifest.
 
+#### 9. CSS Layout Check
+
+Scan all `Screen_*.html` files for common layout pitfalls:
+
+**a. Height issues:**
+```bash
+grep -n 'height: 100%' documents/Screen_*.html
+```
+Flag any match inside a `<style>` block as a potential layout bug. Verify the parent chain has explicit heights; if not, replace with `min-height: 100vh` or an explicit px/vh/rem value.
+
+**b. Chart/graph containers without explicit height:**
+Search for elements with class names containing "chart", "graph", "canvas", or "visualization" and verify they have an explicit `height` or `min-height` in px, vh, or rem. Flag any that rely on `height: 100%` or have no height set.
+
+**c. Font imports in screen files:**
+```bash
+grep -n 'fonts.googleapis' documents/Screen_*.html
+```
+Flag any match. Font imports must only appear in the shared CSS file (`[product-slug].css`), not in individual screen files. Remove duplicates from screens.
+
+**d. Arbitrary z-index values:**
+```bash
+grep -oE 'z-index:\s*[0-9]+' documents/Screen_*.html
+```
+Valid values are 100, 200, 300, 400, 500 (matching the z-index scale tokens). Flag any other value (especially 9999, 10000, 999). Replace with the appropriate token from the Design Token Contract.
+
+**e. Token usage ratio (spacing):**
+```bash
+# Spacing token references (should be high):
+grep -c 'var(--space' documents/Screen_*.html
+
+# Hardcoded margin/padding px values (should be low):
+grep -oE '(margin|padding)[^;]*[0-9]+px' documents/Screen_*.html | wc -l
+```
+Flag any screen where hardcoded spacing values significantly outnumber token references.
+
+**f. Touch target check:**
+Look for buttons, links, and inputs with explicit height < 44px (e.g., `height: 32px`, `height: 28px`). Flag for review.
+
 ---
 
 ### Step 10: Produce Handoff Summary
