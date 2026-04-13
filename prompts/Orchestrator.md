@@ -275,6 +275,7 @@ When screens are built by parallel subagents, broken cross-links and inconsisten
    - **Spacing tokens** (--space-*), **shadow tokens** (--shadow-*), **radius tokens** (--radius-*), **animation tokens** (--duration-*, --ease-*), **z-index tokens** (--z-*), and **breakpoint tokens** (--bp-*)
    Format these into the Design Token Contract block (referenced in the Phase B subagent template).
 4.5. **Analyze PRD personas for dashboard splitting** — For each persona in the PRD, list their `dashboard_widgets`. If personas share <70% of dashboard content, plan separate dashboard screens (e.g., `Screen_Dashboard_Teacher`, `Screen_Dashboard_Admin`). If >70% overlap, plan one dashboard with role-specific sections. Document the decision. The resulting screen list feeds into the screen manifest (step 5).
+4.6. **Extract product context for subagent prompts** — From the PRFAQ handoff, extract: product name, problem statement (2-3 sentences), solution description (2-3 sentences), value proposition, and customer definition. From the PRD handoff, extract each persona's name, role, goals, pain points, and dashboard_widgets. These are pasted into the subagent prompt template (Phase B) so each screen builder understands the product and its users.
 
 5. **Create the screen manifest** — a list of EXACT filenames, one per screen:
    ```
@@ -357,6 +358,29 @@ CSS
 Add this in your <head>:
   <link rel="stylesheet" href="smartsearch.css">
 Do NOT inline the design system CSS. Only add screen-specific styles in <style> (< 50 lines).
+
+PRODUCT CONTEXT (understand what you're building)
+──────────────────────────────────────────────────
+Product: [product name]
+Problem: [PRFAQ problem statement — 2-3 sentences from the Working Backwards "what is the problem"]
+Solution: [PRFAQ solution description — 2-3 sentences from "what is the solution"]
+Value Prop: [what makes this product different from competitors]
+Customer: [who is the target customer — from PRFAQ "who is the customer"]
+
+PERSONA FOR THIS SCREEN
+────────────────────────
+Name: [persona name from PRD]
+Role: [role/title]
+Goals: [what this persona is trying to achieve]
+Pain Points: [current frustrations this screen should address]
+Key Widgets/Actions: [from PRD dashboard_widgets — what this persona needs to see and do]
+
+USER FLOW CONTEXT
+─────────────────
+This screen's role: [e.g., "Teacher's primary dashboard — landing page after login"]
+Previous step: [what the user just did — e.g., "Logged in" or "Clicked 'View Results' from Dashboard"]
+What the user does here: [primary actions on this screen — e.g., "Reviews student progress, launches study modules, checks upcoming exams"]
+Next screens: [where the user goes from here — e.g., "Screen_StudyModule via 'Start Module' button, Screen_ExamResults via 'View Results' card"]
 
 SCREEN MANIFEST (all screens in this prototype)
 ────────────────────────────────────────────────
@@ -517,14 +541,20 @@ When implementing these requirements:
 - Content Link Map entries tell the subagent which in-content elements (cards, buttons, CTAs) must link to which screens — no dead links
 - Expanded tokens (spacing, shadows, radius, animation, z-index, breakpoints) ensure visual consistency beyond just colors — same card shadows, same button radii, same animation feel
 - Component HTML Patterns specify the required DOM structure for components with descendant CSS selectors — subagents cannot restructure these
+- Product context (from PRFAQ) gives the subagent the "why" — what the product is, who it's for, what problem it solves
+- Persona context (from PRD) gives the subagent the "who" — whose screen this is, what they care about, what they need to see
+- User flow context gives the subagent the "where" — how this screen connects to the rest of the prototype, what happens before and after
 
 Repeat this template for each screen, changing only:
 - YOUR FILE (the filename and save path)
 - The `active` class position in the sidebar nav
+- PRODUCT CONTEXT (same for all screens — paste once from PRFAQ/PRD summary)
+- PERSONA FOR THIS SCREEN (the persona this screen primarily serves)
+- USER FLOW CONTEXT (this screen's role in the user journey)
 - SCREEN REQUIREMENTS (the relevant PRD requirements)
 - CONTENT LINKS FROM YOUR SCREEN (the relevant entries from the Content Link Map)
 
-Everything else stays identical across all subagent prompts: CSS link, manifest, sidebar shell, brand assets, Design Token Contract, Content Link Map, rules.
+Everything else stays identical across all subagent prompts: CSS link, manifest, sidebar shell, brand assets, Design Token Contract, Content Link Map, quality expectations, rules. Product context is the same for all screens; persona, user flow, screen requirements, and content links change per screen.
 
 **Why this is mandatory:** Without this contract, parallel subagents independently invent filenames (e.g., `Screen_Individuals_` vs `Screen_BenchmarkManager_`) and build different navigation panes, causing broken links across every screen.
 
