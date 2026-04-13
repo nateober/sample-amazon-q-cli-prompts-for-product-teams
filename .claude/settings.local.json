@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(node create-1pager-docx.js)",
-      "Bash(npm install docx)",
-      "Bash(grep -E \"\\\\.md$|\\\\.html$\")"
-    ]
-  }
-}
