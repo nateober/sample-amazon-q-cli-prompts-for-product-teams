@@ -616,6 +616,9 @@ Each screen subagent's prompt MUST include ALL of the following — no exception
 5. **The design system class names** available for use
 6. **The Design Token Contract** — all CSS variable names with values, component class inventory, and explicit theme mode (LIGHT/DARK). See Step 2.5 for the contract template. Subagents must use `var()` references for all colors — never hardcoded hex values.
 7. **The Content Link Map entries for this screen** — the specific in-content links (dashboard cards, action buttons, CTAs) that should navigate to other screens, with exact target filenames. Subagents must wire these into their page content. Do NOT use `href="#"` or `javascript:void(0)` for any element that should navigate.
+8. **Product context** — the product name, PRFAQ problem/solution statements, value proposition, and customer definition. Same for all screens. This gives the subagent the "why" behind the prototype.
+9. **The persona this screen serves** — name, role, goals, pain points, and dashboard widgets from the PRD. This tells the subagent who they're building for and what that persona needs.
+10. **User flow context** — what the user did before arriving at this screen, what they do on this screen, and where they go next. Derived from PRD user flows. This ensures the screen connects logically to the rest of the prototype.
 
 **Explicit instruction to include in every subagent prompt:**
 > "Use ONLY filenames from the manifest for all href links. Do NOT rename, abbreviate, or invent alternative filenames. Paste the sidebar shell HTML VERBATIM (the entire <aside> block) — only add 'active' to your screen's nav item. Use var(--variable-name) for ALL colors — never hardcode hex values. Use component classes from the Design Token Contract instead of writing custom styles. Wire all Content Link Map entries into your page content — do NOT use href='#' or javascript:void(0) for elements that should navigate."
