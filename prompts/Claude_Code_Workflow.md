@@ -244,6 +244,9 @@ After gathering initial information, tell the user:
 - [ ] No `height: 100%` in screen styles without explicit parent chain
 - [ ] No font imports in screen files (fonts in shared CSS only)
 - [ ] Sidebar shell template created (full `<aside>` with logo, nav, footer — not just `<nav>`)
+- [ ] Product context (PRFAQ problem/solution) included in every subagent prompt
+- [ ] Persona assigned to each screen (name, role, goals, pain points)
+- [ ] User flow context included (previous step, current actions, next screens)
 - [ ] Component HTML Patterns documented in Design Token Contract
 - [ ] Sidebar markup consistent across all screens (identical `<aside>` structure)
 - [ ] No inline styles on elements styled by shared CSS

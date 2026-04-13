@@ -290,7 +290,10 @@ All inter-agent communications use this envelope structure:
         {
           "name": "string",
           "role": "string",
-          "primary_need": "string"
+          "primary_need": "string",
+          "goals": ["string"],
+          "pain_points": ["string"],
+          "dashboard_widgets": ["string (e.g., 'Student progress charts', 'Admin user table')"]
         }
       ],
       "core_requirements": [
@@ -330,7 +333,10 @@ All inter-agent communications use this envelope structure:
         {
           "name": "string",
           "role": "string",
-          "primary_workflow": "string"
+          "primary_workflow": "string",
+          "goals": ["string"],
+          "pain_points": ["string"],
+          "dashboard_widgets": ["string"]
         }
       ],
       "core_requirements": ["string"],
