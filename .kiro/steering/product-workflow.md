@@ -298,6 +298,9 @@ Before marking complete, verify:
 - [ ] Screen manifest created with exact filenames before building screens
 - [ ] Design System reference page exists (created BEFORE any screens)
 - [ ] Design Token Contract extracted from CSS (theme mode, color/spacing/shadow/radius/animation/z-index/breakpoint vars, class inventory)
+- [ ] Product context (PRFAQ summary) passed to every screen subagent
+- [ ] Each screen has assigned persona with goals, pain points, and dashboard widgets
+- [ ] User flow context documents previous/current/next screen for each screen
 - [ ] ScreenIndex file exists with links to all screens
 - [ ] Individual Screen_*.html files exist (NOT one monolithic file)
 - [ ] Navigation between screens uses relative links that work
