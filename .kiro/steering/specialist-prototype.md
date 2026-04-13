@@ -89,6 +89,11 @@ Each screen must feel like a working app, not a wireframe:
 - Negative space is intentional
 - Ask: "Would a PM demo this confidently?" If not, add more depth.
 
+**Product Understanding:**
+- Read the PRODUCT CONTEXT block before building — understand what the product is and why it exists
+- Build for the PERSONA specified — their goals, pain points, and widgets should drive what you emphasize on screen
+- Follow the USER FLOW CONTEXT — this screen should connect logically to the screens before and after it
+
 ## CSS Variable Usage (MANDATORY)
 
 When writing screen-specific `<style>` overrides:
